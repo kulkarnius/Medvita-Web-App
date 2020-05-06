@@ -26,9 +26,9 @@
 void USART_Transmit(unsigned char data)
 {
 	while(isBitSet(PINB, PB6)) //ensures that the program stalls itself if CTS is false.
-	{ }
-	else
 	{
+		
+	}
 		while (!(UCSR0A & (1 << UDRE0))) //If UDRE0 0 bit is set to 1, the transmitter is ready to transmit again. The isBitSet part
 		{ //This piece of code stalls the program when transmitting.
 			//RTS is set to high to indicate UNSAFE
@@ -44,9 +44,6 @@ void USART_Transmit(unsigned char data)
 		}
 		//Set RTS to low to indicate SAFE
 		UDR0 = data;
-	}
-	
-	
 }
 
 

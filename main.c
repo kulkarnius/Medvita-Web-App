@@ -25,7 +25,7 @@
 
 void USART_Transmit(unsigned char data)
 {
-	if(isBitSet(PINB, PB6)) //ensures that the program stalls itself if CTS is false.
+	while(isBitSet(PINB, PB6)) //ensures that the program stalls itself if CTS is false.
 	{ }
 	else
 	{
@@ -79,8 +79,19 @@ int main(void)
 		while(isBitSet(ADCSRA, ADSC))
 		{ //Stall the code to not do anything while the ADC is active.
 		}
-		USART_Transmit(ADCL); //ADCL and ADCH is where we are storing the ADC output. it is then put in the USART Transmit function which asks for a char to transmit the raw data from the high register. 
+		
+		/*
+		For Athul:
+		I'm transmitting the ADCH first and then the ADCL signal after. I may add in something after on the USART Transmit like a 0xFF byte to confirm we recieved all the data.
+		
+		ADCH stores the first 2 bits, the most significant ones. ADCL stores the rest of the . For your code, ensure that the ADCH is shifted 8 bits left, and then tack on the ADCL value to get the 0-1023 number :)
+		*/
+		
 		USART_Transmit(ADCH); //Will only be 2 bits.
+		USART_Transmit(ADCL); //ADCL and ADCH is where we are storing the ADC output. it is then put in the USART Transmit function which asks for a char to transmit the raw data from the high register. 
+		
+		
+			
     }
 }
 

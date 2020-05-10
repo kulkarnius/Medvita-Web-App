@@ -13,6 +13,7 @@
 #endif
 
 #include <avr/io.h>
+#include <util/delay.h>	
 
 #define baudRate9600 5 //9600 BPS baud rate. The code is 71.
 
@@ -23,8 +24,21 @@
 #define toggleBit(byte, bit) (byte ^= (1 << bit)) //uses an XOR gate. Basically, if both bits are the same, 0 is returned. By using a togglebit macros, we can target a certain bit by entering ex: 10101010 with 00000100 in order to toggle the bit.
 
 
+void blinkLED() //blinks the led. Ports are hardcoded.
+{
+	toggleBit(PORTB, PB0);
+	_delay_ms(500);
+	toggleBit(PORTB, PB0);
+	
+}
+
 void USART_Transmit(unsigned char data)
 {
+	//Blink when its transmitting
+	blinkLED();
+	
+	
+	
 	while(isBitSet(PINB, PB6)) //ensures that the program stalls itself if CTS is false.
 	{
 		
@@ -53,6 +67,14 @@ int main(void)
 	PORTB &= (0x00); //Clear PORTB register. This also sets the RTS pin, PB7, to low.
 	PORTB |= (1 << PB6); //Use internal pull-up resistor in order to use PinX for determining output. 0 = logic low.
 	DDRB |= (1 << PB7); // Set the RTS, PB7 as an output. We can now use PortB bit 7 to set high or low.
+	DDRB |= (1 << PB0); //Set the LED
+	
+	//turn the led on.
+	if(isBitSet(PORTB, PB0))
+	{
+		toggleBit(PORTB, PB0);	
+	} 
+	
 	
 	unsigned int ubrr = baudRate9600; //universal baud rate generator
 	

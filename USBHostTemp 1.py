@@ -44,7 +44,7 @@ if device.is_kernel_driver_active(i):
 #Setting device configuration for USB communication.
 device.set_configuration()
 
-#Read 2 bytes from the Bulk OUT Endpoint
+#Read 2 bytes from the Bulk IN Endpoint
 adcVals = device.read(epaddIN, 2) 
 
 #Y'all know what this shit does

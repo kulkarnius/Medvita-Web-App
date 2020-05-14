@@ -29,23 +29,18 @@ void blinkLED() //blinks the led. Ports are hardcoded.
 	toggleBit(PORTB, PB0);
 	_delay_ms(500);
 	toggleBit(PORTB, PB0);
-	
 }
 
 void USART_Transmit(unsigned char data)
 {
 	//Blink when its transmitting
 	blinkLED();
-	
-	
-	
-	while(isBitSet(PINB, PB6)) //ensures that the program stalls itself if CTS is false.
-	{
 		
-	}
-		while (!(UCSR0A & (1 << UDRE0))) //If UDRE0 0 bit is set to 1, the transmitter is ready to transmit again. The isBitSet part
-		{ //This piece of code stalls the program when transmitting.
-			//RTS is set to high to indicate UNSAFE
+	while(isBitSet(PINB, PB6)); //ensures that the program stalls itself if CTS is false
+	
+		while (isBitClear(UCSR0A, UDRE0)) //If UDRE0 0 bit is set to 1, the transmitter is ready to transmit again.
+		{ 
+			//This piece of code stalls the program when transmitting. RTS is set to high to indicate UNSAFE
 			if(!isBitSet(PORTB, PB7))
 			{
 				toggleBit(PORTB, PB7);
@@ -60,8 +55,25 @@ void USART_Transmit(unsigned char data)
 		UDR0 = data;
 }
 
+int ADCsingleRead(uint8_t adcPort) //adcPort argument takes an integer from 0-8 that will specify the ADC to use. Easier than hard coding the port so that in the future, we can call the function :)
+{
+	int returnValue;
+	ADMUX = 0b00000000;
+	ADMUX = adcPort;
+	ADMUX |= (1 << REFS0) | (0 << ADLAR); //AVcc internal reference, right justify ADLAR. Plan is to output ADCH for now since this is a test.
+	ADCSRA |= (1 << ADEN) | (1 << ADPS1) | (1 << ADPS0);
+	
+	ADCSRA |= (1 << ADSC);
+	
+	while(isBitSet(ADCSRA, ADSC));
+	
+	returnValue = ADCL;
+	//returnValue = (ADCH << 8) + ADCL;	//Use this if ADLAR is right justified to get 10 bit resolution.
+	return returnValue;
 
-int main(void)
+}
+
+void init()
 {
 	DDRB &= (0x00); //Clear DDRB, and also sets PB6 as an input as it is the CTS.
 	PORTB &= (0x00); //Clear PORTB register. This also sets the RTS pin, PB7, to low.
@@ -72,45 +84,39 @@ int main(void)
 	//turn the led on.
 	if(isBitSet(PORTB, PB0))
 	{
-		toggleBit(PORTB, PB0);	
-	} 
-	
+		toggleBit(PORTB, PB0);
+	}
 	
 	unsigned int ubrr = baudRate9600; //universal baud rate generator
 	
 	//ADC Code:
-	ADMUX = 0b01000011; //last 4 dictate pin output, ADLAR is now 0 cause we want that sexy 10 bit resolution instead of the peasant 8
-	ADCSRA = 0b10000011; //clock speed divided by 8. 125 kHz Clock
-	ADCSRB = 0b00000000;//ADCSRB
+	ADMUX = 0b00000000;
+	ADCSRA = 0b00000000;
+
 	
 	//UART Code:
 	UCSR0C = 0x06;  //This is to set the frame format with 1 stop bit and no parity bits
-	UCSR0B = (1 << TXEN0);  //Starts the cannon...I mean transmitter
+	UCSR0B |= (1 << TXEN0) | (1 << RXEN0);  //Starts the cannon...I mean transmitter
 	UBRR0H = (ubrr>>8);
-	UBRR0L = (ubrr);
-	
-	
-	
+	UBRR0L = (ubrr);	
+}
 
+
+int main(void)
+{
+	init();
+	
     while (1) 
     {
-		ADCSRA |= (1 << ADSC); //Set the 2nd bit of the ADCSRA to start the ADC.
-		while(isBitSet(ADCSRA, ADSC))
-		{ //Stall the code to not do anything while the ADC is active.
-		}
-		
 		/*
 		For Athul:
 		I'm transmitting the ADCH first and then the ADCL signal after. I may add in something after on the USART Transmit like a 0xFF byte to confirm we recieved all the data.
 		
 		ADCH stores the first 2 bits, the most significant ones. ADCL stores the rest of the . For your code, ensure that the ADCH is shifted 8 bits left, and then tack on the ADCL value to get the 0-1023 number :)
 		*/
-		
+		int notUsed = ADCsingleRead(0); //single read the ADC off of ADC 0
 		USART_Transmit(ADCH); //Will only be 2 bits.
-		USART_Transmit(ADCL); //ADCL and ADCH is where we are storing the ADC output. it is then put in the USART Transmit function which asks for a char to transmit the raw data from the high register. 
-		
-		
-			
+		USART_Transmit(ADCL); //ADCL and ADCH is where we are storing the ADC output. it is then put in the USART Transmit function which asks for a char to transmit the raw data from the high register. 		
     }
 }
 

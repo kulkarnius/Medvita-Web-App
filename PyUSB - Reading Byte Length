@@ -1,0 +1,37 @@
+
+"""
+Created on Wed May 13 17:05:28 2020
+
+@author: atharva
+"""
+
+import usb.core
+
+#Device IDs pulled by running a lsusb command on linux and getting product and vendor IDs.
+#Here I am creating a device object for the associated device
+dev = usb.core.find(idVendor=0x0403, idProduct=0x6001)
+
+#Define Endpoint Here. Just going through the first interface and first endpoint in the device
+ep = dev[0].interfaces()[0].endpoints()[0]
+
+#Need interface number to detach kernel
+i = dev[0].interfaces()[0].bInterfaceNumber
+
+#Resetting FT232RL
+dev.reset()
+
+#Detaching driver so we can configure it. 
+#I'm not certain whether you need this, but I think you do.
+if dev.is_kernel_driver_active(i):
+    dev.detach_kernel_driver(i)
+
+#Set the First Configuration
+dev.set_configuration()
+
+#Define endpoint address to read from
+epadd = ep.bEndpointAddress
+
+#Read from the endpoint address
+r = dev.read(epadd, 2)
+
+print(len(r))

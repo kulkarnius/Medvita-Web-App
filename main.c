@@ -14,6 +14,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>	
+#include <stdlib.h>
 
 #define baudRate9600 5 //9600 BPS baud rate. The code is 71.
 
@@ -31,7 +32,7 @@ void blinkLED() //blinks the led. Ports are hardcoded.
 	toggleBit(PORTB, PB0);
 }
 
-void USART_Transmit(unsigned char data)
+void USART_TransmitChar(unsigned char data)
 {
 	//Blink when its transmitting
 	blinkLED();
@@ -55,6 +56,18 @@ void USART_Transmit(unsigned char data)
 		UDR0 = data;
 }
 
+void UART_putString(char* stringA)
+{
+	while(*stringA != 0x00)
+	{
+		USART_TransmitChar(*stringA);
+		stringA++;
+	}
+	
+}
+
+
+
 int ADCsingleRead(uint8_t adcPort) //adcPort argument takes an integer from 0-8 that will specify the ADC to use. Easier than hard coding the port so that in the future, we can call the function :)
 {
 	int returnValue;
@@ -67,8 +80,8 @@ int ADCsingleRead(uint8_t adcPort) //adcPort argument takes an integer from 0-8 
 	
 	while(isBitSet(ADCSRA, ADSC));
 	
-	returnValue = ADCL;
-	//returnValue = (ADCH << 8) + ADCL;	//Use this if ADLAR is right justified to get 10 bit resolution.
+	//returnValue = ADCL;
+	returnValue = (ADCH << 8) + ADCL;	//Use this if ADLAR is right justified to get 10 bit resolution.
 	return returnValue;
 
 }
@@ -114,9 +127,15 @@ int main(void)
 		
 		ADCH stores the first 2 bits, the most significant ones. ADCL stores the rest of the . For your code, ensure that the ADCH is shifted 8 bits left, and then tack on the ADCL value to get the 0-1023 number :)
 		*/
-		int notUsed = ADCsingleRead(0); //single read the ADC off of ADC 0
-		USART_Transmit(ADCH); //Will only be 2 bits.
-		USART_Transmit(ADCL); //ADCL and ADCH is where we are storing the ADC output. it is then put in the USART Transmit function which asks for a char to transmit the raw data from the high register. 		
+		int tempReading = ADCsingleRead(0); //single read the ADC off of ADC 0
+		char tempBuffer[11];
+		itoa(tempReading, tempBuffer, 2);
+		char tempString[] = "Temperature: ";
+		UART_putString(tempString);
+		UART_putString(tempBuffer);
+		
+		USART_TransmitChar(ADCH); //Will only be 2 bits.
+		USART_TransmitChar(ADCL); //ADCL and ADCH is where we are storing the ADC output. it is then put in the USART Transmit function which asks for a char to transmit the raw data from the high register. 		
     }
 }
 

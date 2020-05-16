@@ -114,9 +114,21 @@ int main(void)
 		
 		ADCH stores the first 2 bits, the most significant ones. ADCL stores the rest of the . For your code, ensure that the ADCH is shifted 8 bits left, and then tack on the ADCL value to get the 0-1023 number :)
 		*/
+<<<<<<< Updated upstream
 		int notUsed = ADCsingleRead(0); //single read the ADC off of ADC 0
 		USART_Transmit(ADCH); //Will only be 2 bits.
 		USART_Transmit(ADCL); //ADCL and ADCH is where we are storing the ADC output. it is then put in the USART Transmit function which asks for a char to transmit the raw data from the high register. 		
+=======
+		int tempReading = ADCsingleRead(5); //single read the ADC off of ADC 0
+		char tempBuffer[11];
+		itoa(tempReading, tempBuffer, 2);
+		char tempString[] = "Temperature: ";
+		UART_putString(tempString);
+		UART_putString(tempBuffer);
+		
+		USART_TransmitChar(ADCH); //Will only be 2 bits.
+		USART_TransmitChar(ADCL); //ADCL and ADCH is where we are storing the ADC output. it is then put in the USART Transmit function which asks for a char to transmit the raw data from the high register. 		
+>>>>>>> Stashed changes
     }
 }
 

@@ -44,7 +44,7 @@ int main(void)
     /* Replace with your application code */
     while (1) 
     {
-		PORTD = ADCsingleRead(0);
+		PORTD = ADCsingleRead(5);
     }
 	return 0;
 }

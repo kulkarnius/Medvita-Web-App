@@ -47,22 +47,16 @@ import serial
 url = 'hwgrep://' + 'AB0JQF1NA'
 
 #Define Device and Open Port.
-dev = serial.serial_for_url('hwgrep://AB0JQF1NA', baudrate=13200, timeout=2)
+#Make sure baudrate is same as what Sahil has. 
+#Timeout can be changed it means that the port will be open for 20 seconds or something.
+dev = serial.serial_for_url('hwgrep://AB0JQF1NA', baudrate=9600, timeout=20)
 
-#Raise Ready to Send. Maybe this is useful, IDK really. It might mean that we can get a CTS from Sahil
-dev.rts = True
-
-#Let's this helps a little. Better Flow control hopefully?
-print(dev.cts)
-
-#Read From the Port
-r = dev.read(4)
+#Read From the Port. This is going to read 10 bytes. It will keep it open until the timeout expires.
+#If you give no timeout, it will wait until it reads 10 bytes. Or it will be stuck forever...
+r = dev.read(10)
 
 #This is supposed to just allow us to read straight from it. But let's see
 print(r)
-
-#Lower RTS
-dev.rts = False
 
 #Close Port
 dev.close()

@@ -30,6 +30,7 @@ void blinkLED() //blinks the led. Ports are hardcoded.
 	toggleBit(PORTB, PB0);
 	_delay_ms(500);
 	toggleBit(PORTB, PB0);
+	_delay_ms(500);
 }
 
 void USART_TransmitChar(unsigned char data)
@@ -37,21 +38,21 @@ void USART_TransmitChar(unsigned char data)
 	//Blink when its transmitting
 	blinkLED();
 		
-	while(isBitSet(PINB, PB6)); //ensures that the program stalls itself if CTS is false
+	//while(isBitSet(PINB, PB6)); //ensures that the program stalls itself if CTS is false
 	
 		while (isBitClear(UCSR0A, UDRE0)) //If UDRE0 0 bit is set to 1, the transmitter is ready to transmit again.
 		{ 
 			//This piece of code stalls the program when transmitting. RTS is set to high to indicate UNSAFE
-			if(!isBitSet(PORTB, PB7))
-			{
-				toggleBit(PORTB, PB7);
-			}
+			//if(!isBitSet(PORTB, PB7))
+			//{
+			//	toggleBit(PORTB, PB7);
+			//}
 			
 		}
-		if(!isBitClear(PORTB, PB7))
-		{
-			toggleBit(PORTB, PB7);
-		}
+		//if(!isBitClear(PORTB, PB7))
+		//{
+			//toggleBit(PORTB, PB7);
+		//}
 		//Set RTS to low to indicate SAFE
 		UDR0 = data;
 }
@@ -71,14 +72,15 @@ void UART_putString(char* stringA)
 int ADCsingleRead(uint8_t adcPort) //adcPort argument takes an integer from 0-8 that will specify the ADC to use. Easier than hard coding the port so that in the future, we can call the function :)
 {
 	int returnValue;
-	ADMUX = 0b00000000;
 	ADMUX = adcPort;
-	ADMUX |= (1 << REFS0) | (0 << ADLAR); //AVcc internal reference, right justify ADLAR. Plan is to output ADCH for now since this is a test.
+	ADMUX |= (1 << REFS0) | (1 << ADLAR);  //AVcc internal reference, left justify ADLAR. Plan is to output ADCH for now since this is a test.
 	ADCSRA |= (1 << ADEN) | (1 << ADPS1) | (1 << ADPS0);
-	
 	ADCSRA |= (1 << ADSC);
 	
-	while(isBitSet(ADCSRA, ADSC));
+	while(isBitSet(ADCSRA, ADSC))
+	{
+		
+	}
 	
 	//returnValue = ADCL;
 	returnValue = (ADCH << 8) + ADCL;	//Use this if ADLAR is right justified to get 10 bit resolution.
@@ -90,8 +92,8 @@ void init()
 {
 	DDRB &= (0x00); //Clear DDRB, and also sets PB6 as an input as it is the CTS.
 	PORTB &= (0x00); //Clear PORTB register. This also sets the RTS pin, PB7, to low.
-	PORTB |= (1 << PB6); //Use internal pull-up resistor in order to use PinX for determining output. 0 = logic low.
-	DDRB |= (1 << PB7); // Set the RTS, PB7 as an output. We can now use PortB bit 7 to set high or low.
+	//PORTB |= (1 << PB6); //Use internal pull-up resistor in order to use PinX for determining output. 0 = logic low.
+	//DDRB |= (1 << PB7); // Set the RTS, PB7 as an output. We can now use PortB bit 7 to set high or low.
 	DDRB |= (1 << PB0); //Set the LED
 	
 	//turn the led on.
@@ -105,7 +107,7 @@ void init()
 	//ADC Code:
 	ADMUX = 0b00000000;
 	ADCSRA = 0b00000000;
-
+	ADCSRB = 0b00000000;
 	
 	//UART Code:
 	UCSR0C = 0x06;  //This is to set the frame format with 1 stop bit and no parity bits

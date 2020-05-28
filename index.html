@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+    <script src="init-firebase-auth.js"></script>
+    <script type="text/javascript">
+    
+      function userSignIn() {
+        // Retrieve email and password
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+          
+        // Validate email and password
+        if (email.length < 6) {
+          alert('Please enter a valid email address');
+          return;
+        }
+        if (password.length < 8) {
+          alert('Password must contain at least 8 characters');
+          return;
+        }
+        
+        var auth = firebase.auth();
+        auth.signInWithEmailAndPassword(email, password).catch(function(error) {
+          alert('Incorrect email or password');
+          return;
+        });
+        
+        auth.onAuthStateChanged(function(user) {
+          if (user) {
+            window.location = "content.html";
+          }
+        });
+      }
+
+    </script>	
+  </head>
+  <body>
+
+    <h2>User Sign-In</h2>
+
+    <input type="text" id="email" name="email" placeholder="Email">
+    </br>
+    <input type="password" id="password" name="password" placeholder="Password">
+    </br></br>
+    <button id="sign-in" name="signin" onclick="userSignIn()">Sign In</button>
+    </br></br>
+    <a href="sign-up.html">New user? Click here to sign up!</a>
+  </body>
+</html>

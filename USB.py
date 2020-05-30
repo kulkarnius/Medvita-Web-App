@@ -50,7 +50,8 @@ msg = str(r)
 iadcout = msg.partition("'")[2]
 
 #Cut second time
-adcout = a.partition("T")[0]
+adcout = float(iadcout.partition("T")[0])
+
 
 #Close Port
 dev.close()
@@ -118,7 +119,7 @@ But for now, since we're developing locally, the environment variable works perf
 #Defining the database
 firestore = firestore.Client() #It infers the client from the json file in my environment
 
-testdoc = firestore.collection(u'test').document(u'test') #Generating the document, or accessing it if already exists. 
+testdoc = firestore.collection(u'Temperature').document(u'TempData') #Generating the document, or accessing it if already exists. 
 
 #Setting the values inside the document. 
 testdoc.set({

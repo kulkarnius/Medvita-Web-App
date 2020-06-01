@@ -15,7 +15,7 @@ This first block of code reads from the USB and pulls out the value.
 
 #Define Port Structure
 #Make sure baudrate is same as what Sahil has. 
-baudrate = 4800
+baudrate = 38400
 
 #Timeout can be changed it means that the port will be open for 20 seconds or something.
 timeout = 0.05 #This is a very sketchy timeout

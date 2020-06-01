@@ -18,7 +18,7 @@ This first block of code reads from the USB and pulls out the value.
 baudrate = 4800
 
 #Timeout can be changed it means that the port will be open for 20 seconds or something.
-timeout = 2
+timeout = 0.05 #This is a very sketchy timeout
 
 #Define Device and Open Port.
 #The url that points to the device will depend on the board and the device that we use.

@@ -1,19 +1,30 @@
+<!--
+This code will be replaced with / updated as the next page the user encounters
+after creating an account / logging in
+-->
 <!DOCTYPE html>
 <html>
   <head>
     <title>Content Page</title>
+    <!--Initialize Firebase-->
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+    <!--Initialize Firebase Auth-->
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+    <!--Initialize Firestore-->
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+    <!--Firebase config object-->
     <script src="init-firebase-auth.js"></script>
     <script>
         
+        // Listens for entry of user
         firebase.auth().onAuthStateChanged(function(user) {
+            // If there is a user detected
             if (user) {
                 var email = user.email;
                 var msg = "Welcome " + email + "!";
                 document.getElementById('pageContent').innerHTML = msg;
             }
+            // If there is no user detected or user signs out
             else
             {
                 alert('You have signed out!');
@@ -24,6 +35,7 @@
     <script>
 
         function userSignOut() {
+            // Signs user out
             firebase.auth().signOut();
             window.location = "index.html";
         }

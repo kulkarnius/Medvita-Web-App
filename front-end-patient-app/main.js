@@ -1,10 +1,11 @@
 //main.js is where essentially all of the backend for the application takes place
 //to run program, type "npm start" into terminal
 
-console.log('main process working'); //sends a log each time to show that app works
+console.log('main process working');
 
 const electron = require("electron");
-const { app , BrowserWindow} = require("electron");
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const url = require("url");
 const ipc = electron.ipcMain;
@@ -15,7 +16,7 @@ function createWindow() {
     parentWindow = new BrowserWindow({
         title: 'MedTech', /*show: false,*/
         webPreferences: {
-            nodeIntegration: true, //not secure
+            //nodeIntegration: true, //not secure
             //enableRemoteModule: true //not secure
         }
     });
@@ -23,8 +24,10 @@ function createWindow() {
         parent: parentWindow, modal: true, title: 'Login-Screen',
         width: 400, maxWidth: 400, height: 525, maxHeight: 525, frame: false,
         webPreferences: {
-            nodeIntegration: true, //not secure
-            //enableRemoteModule: true //not secure
+            //nodeIntegration: true, //not secure
+            //enableRemoteModule: true, //not secure
+            //contextIsolation: true, //protects against prototype pollution attacks, needs to be set eventually
+            preload: path.join(app.getAppPath(), 'preload.js')
         }
     });
     /*childWindow.once('ready-to-show', () => {

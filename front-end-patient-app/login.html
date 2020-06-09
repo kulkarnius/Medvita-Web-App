@@ -5,13 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In</title>
     <link rel="stylesheet" href="styles.css">
-    <!--Initialize Firebase-->
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
-    <!--Initialize Firebase Auth-->
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
-    <!--Initialize Firestore-->
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
-    <!--Firebase config object-->
     <script src="init-firebase-auth.js"></script>
     <script type="text/javascript">
     
@@ -30,17 +26,12 @@
           return;
         }
         
-        // Create Firebase user instance
         var auth = firebase.auth();
-
-        // Sends email and password to Firebase Auth
         auth.signInWithEmailAndPassword(email, password).catch(function(error) {
           alert('Incorrect email or password');
           return;
         });
         
-        // Event listener that redirects to content page after detection of login
-        // Note: User is saved in browser's local storage so no need to manually transfer
         auth.onAuthStateChanged(function(user) {
           if (user) {
             window.location = "content.html";
@@ -48,7 +39,7 @@
         });
       }
 
-    </script>	
+    </script>
     <style>
       body {font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;}
       form {border: 3px solid #f1f1f1;}
@@ -140,7 +131,10 @@
     </form>
     <a href="sign-up.html">New user? Click here to sign up!</a>
     <script>
-      require('./index.js')
-    </script>
+      let exitApp = document.getElementById('exitApp')
+      exitApp.addEventListener('click', function() {
+        window.exitApp();
+      })
+    </script>	
   </body>
 </html>

@@ -1,0 +1,59 @@
+.TempBox{
+    margin: 5%;
+    border: 5px solid #B635AA;
+    border-radius: 50px;
+    
+
+}
+
+.TempShow{
+    font-size: 42px;
+    padding: 3%;
+    font-family: 'Source Sans Pro', sans-serif;
+    text-align: center;
+    color: #B635AA;
+    
+   
+}
+.Patient{
+    padding-top: 2%;
+    font-family: 'Source Sans Pro', sans-serif;    
+    color:#0059AB;
+    text-align: center;
+    
+}
+
+
+.button{
+    margin-bottom: 5%;
+    border-radius: 17px;
+    transition-duration: 0.4s;
+    width: 40%;
+    padding: 2%;
+    background-color: #C7E0F9;
+    font-size: 20px
+   
+}
+.button:hover{
+    background-color:white;
+}
+#Cel{
+float: 20px;
+}
+
+#button{
+    font-family: 'Source Sans Pro', sans-serif;
+    color: blue;
+    align: center;
+
+}
+
+#Tempshow {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+h2.Patient {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: left;
+    text-indent: 2%;
+}

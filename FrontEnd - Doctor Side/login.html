@@ -5,28 +5,49 @@
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="login.js"></script>
+    <link rel="stylesheet" href="login.css">
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+    <script src="init.js"></script>
+
 </head>
 <body>
 
 
-<div id="form">
+<div class="navBar">
+    <ul class="nav justify-content-end">
+        <!-- <li class="nav-item">
+          <a class="nav-link active" href="#">Login</a>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="#">Create Account</a>
+    
+      </ul>
+
+    </div>
+   
+<div id="main">
+
+
+    <h1 class="display-4 text-center m-5">Welcome to Medvita</h1>
+
 <div class="container">
 
     <form>
         <div class="form-group">
           <label for="exampleInputEmail1">Medvita Username</label>
-          <input type="text" class="form-control" id="Username" aria-describedby="emailHelp">
-          <small id="emailHelp" class="form-text text-muted">Please enter your Medvita Medical ID</small>
+          <input type="text" class="form-control" id="username" aria-describedby="emailHelp">
+          <small id="emailHelp" class="form-text">Please enter your Medvita Medical ID</small>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Password</label>
           <input type="password" class="form-control" id="password">
         </div>
-       
-        
+        <button type="button" class="btn btn-primary" onclick="login()"> <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>   Login</button>  
       </form>
 
-      <button type="button" class="btn btn-primary" onclick="login()">Login</button>
+     
 
 </div>
 
@@ -34,17 +55,7 @@
 
 
 
-<script type="text/javascript">
 
-function login(){
-
-console.log("Hello");
-location.href = "Vitals.html";
-
-
-}
-
-</script>
 
 
 

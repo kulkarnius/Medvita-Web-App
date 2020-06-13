@@ -1,4 +1,24 @@
-#form{
+body{
 
-    margin-top: 25%;
+    background-image: url("https://images.unsplash.com/photo-1557683311-eac922347aa1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2515&q=80");
+    background-size: cover;
+    background-position: center;
+    color:rgb(100, 101, 129);
+}
+html{
+    height: 100%;
+}
+#main{
+    padding:7%;
+    color: white;
+}
+h1{
+padding-bottom: 5%;
+text-align: center;
+}
+.nav-link{
+    color: white;
+}
+.navBar{
+    color: white;
 }

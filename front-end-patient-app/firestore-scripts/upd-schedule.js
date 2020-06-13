@@ -2,6 +2,7 @@
 skeleton code, eventually will add allow user to schedule an appt
 */
 
+const admin = require('firebase-admin');  
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -16,21 +17,26 @@ var firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+admin.initializeApp(firebaseConfig);
+let db = admin.firestore();
 
-let db = firebase.firestore();
+// When patient schedules a meeting
+function patientScheduleMeeting(PatientID, Day, Time, Length, Doctor, ApptInfo)
+{
+    // Add the data that patient entered into Firestore
+    let data = {
+        patientID: PatientID,
+        date = {
+            day: Day,
+            time: Time,
+            length: Length
+        },
+        doctor: Doctor,
+        apptInfo: ApptInfo,
+        isAccepted: false
+    };
+    let addAppt = db.document('patients/' + PatientID + '/schedule/' + Day + Time).set(data);
 
-let scheduleData = {
-    name: '',
-    date = {
-        day: '',
-        time: '',
-        length: ''
-    },
-    doctor: '',
-    apptInfo: ''
-};
-
-let addAppt = db.collection('patients').document('firebase.auth userid goes here')
-                            .collection('schedule').document('schedule id').set(scheduleData);
+    // Code to send verification to doctor goes here
+}
                             

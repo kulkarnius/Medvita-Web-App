@@ -95,6 +95,7 @@ div#videos {
 
 div#videos > video {
     background: black;
+    margin-top: 5%;
     width: 45%;
     height: 100%;
     display: block;

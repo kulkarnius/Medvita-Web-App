@@ -1,0 +1,36 @@
+#birthday{
+    border-bottom: 3px solid white;
+    margin-bottom: 10px;
+}
+
+body{
+
+    background-image: url("https://images.unsplash.com/photo-1557683311-eac922347aa1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2515&q=80");
+    background-size: cover;
+    background-position: center;
+    color:rgb(100, 101, 129);
+}
+html{
+    height: 100%;
+}
+#main{
+    padding-top:1%;
+    color: white;
+}
+h1{
+padding-bottom: 2%;
+text-align: center;
+}
+.nav-link{
+    color: white;
+}
+.navBar{
+    color: white;
+}
+#button{
+    margin-bottom: 5%;
+}
+a{
+text-decoration: underline;
+    color: white;
+}

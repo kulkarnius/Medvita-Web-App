@@ -12,54 +12,31 @@
 	<script type="text/javascript">
 
 		function userSignUp() {
-			// Retrieve email and password
-			var email = document.getElementById('email').value;
-			var password = document.getElementById('password').value;
+		  // Retrieve email and password
+		  var email = document.getElementById('email').value;
+		  var password = document.getElementById('password').value;
+		  console.log(email);
+		  console.log(password);
 
-			// Validate email and password
-			if (email.length < 4) {
-				alert('Please enter a valid email address');
-				return;
-			}
-			if (password.length < 8) {
-				alert('Password must contain at least 8 characters');
-				return;
-			}
-			/*
-			var lowCase = false, upCase = false, numChar = false, specChar = false;
-			for (var i = 0; i < password.length; i++) {
-				const currentChar = password.charAt(i);
-				if (currentChar == currentChar.toLowerCase() )
-					lowCase = true;
-				else if (currentChar == currentChar.toUpperCase() )
-					upCase = true;
-				else if (currentChar == 
-			}
-			if (!lowCase) {
-				alert('Please include a lowercase character in password');
-				return;
-			} else if (!upCase) {
-				alert('Please include a lowercase character in password');
-				return;
-			} else if (!numChar) {
-				alert('Please include a lowercase character in password');
-				return;
-			} else if (!specChar) {
-				alert('Please include a lowercase character in password');
-				return;
-			}*/
+		  // Validate email and password
+		  if (email.length < 4) {
+			alert('Please enter a valid email address');
+			return;
+		  }
+		  if (password.length < 8) {
+			alert('Password must contain at least 8 characters');
+			return;
+		  }
 
-			var auth = firebase.auth();
-			auth.createUserWithEmailAndPassword(email, password).catch(function (error) {
-				alert('Could not create new account');
-				return;
-			});
-
-			auth.onAuthStateChanged(function (user) {
-				if (user) {
-					window.location = "content.html";
-				}
-			});
+		  // Logs in user
+	      firebase.auth().createUserWithEmailAndPassword(email, password)
+		  .then(function(result) {
+			// Redirects to content page
+			window.location = "content.html";
+		  }).catch(function(error) {
+			// Error handling
+			alert('something went wrong');
+		  });
 		}
 
 	</script>

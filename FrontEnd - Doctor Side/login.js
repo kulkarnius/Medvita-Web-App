@@ -1,29 +1,23 @@
+/*
+  Login Function
+  Currently only includes login via email, while
+  HTML says either email or username acceptable
+*/
 
 function login(){
+  // Gets user info
+  var email = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
+  console.log(email);
+  console.log(password);
 
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
-    console.log(username);
-    console.log(password);
-    
-    // if(username == "MedvitaTest" && password == "medvita123")
-    // location.href = "Vitals.html";
-    // else{
-    //     alert("Incorrect Login Details")
-    // }
-
-    var auth = firebase.auth();
-        auth.signInWithEmailAndPassword(username, password).catch(function(error) {
-          alert('Incorrect email or password');
-          return;
-        });
-        
-        auth.onAuthStateChanged(function(user) {
-          if (user) {
-            window.location = "Vitals.html";
-          }
-
-
-    });
-
+  // Logs in user
+  firebase.auth().signInWithEmailAndPassword(email, password)
+  .then(function(result) {
+    // Redirects to Vitals page
+    window.location = "Vitals.html";
+  }).catch(function(error) {
+    // Error handling
+    alert('Incorrect email or password');
+  });
 }

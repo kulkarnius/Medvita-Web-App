@@ -15,10 +15,42 @@ function signup()
   // Signs up the user
   firebase.auth().createUserWithEmailAndPassword(email, password)
   .then(function(result) {
-    // Redirects to Vitals page
-    window.location = "Vitals.html";
+
+    var userid = result.user.uid;
+    console.log(userid);
+
+    // Stores rest of data to database
+    let data ={
+      uid: userid,
+      fname: document.getElementById('fname').value,
+      lname: document.getElementById('lname').value,
+      birthday: {
+        month: document.getElementById('month').value,
+        day: document.getElementById('day').value,
+        year: document.getElementById('year').value
+      },
+      address: document.getElementById('address').value,
+      city: document.getElementById('city').value,
+      province: document.getElementById('province').value,
+      postalcode: document.getElementById('pcode').value
+    };
+
+    const db = firebase.firestore();
+
+    const uinfo_ref = db.collection('doctors').doc(`${userid}`).set(data)
+    .then(function() {
+      // Got to vitals page
+      console.log(data);
+      window.location = "Vitals.html";
+    }).catch(function(error) {
+      // Couldn't put data in database
+      alert('Could not put data in database');
+      console.log('Error: ', error);
+    }); 
+
   }).catch(function(error) {
     // Error handling
-    alert('Something went wrong');
+    console.log('Error: ', error);
+    alert('Could not create an account');
   });
 }

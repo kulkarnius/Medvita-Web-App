@@ -7,8 +7,18 @@
 function signup()
 {  
   // Gets user info
-  var email = document.getElementById('email').value;
-  var password = document.getElementById('password').value;
+  let email = document.getElementById('email').value;
+  let password = document.getElementById('password').value;
+  let vpassword = document.getElementById('vpassword').value;
+
+  // Incorrect password
+  if (password != vpassword) {
+    document.getElementById('password').value = "";
+    document.getElementById('vpassword').value = "";
+    alert("Passwords don't match");
+    return;
+  }
+
   console.log(email);
   console.log(password);
 
@@ -16,23 +26,45 @@ function signup()
   firebase.auth().createUserWithEmailAndPassword(email, password)
   .then(function(result) {
 
-    var userid = result.user.uid;
+    let userid = result.user.uid;
     console.log(userid);
+
+    // Gather data
+    let Fname = document.getElementById('fname').value;
+    let Lname = document.getElementById('lname').value;
+    let Month = document.getElementById('month').value;
+    let Day = document.getElementById('day').value;
+    let Year = document.getElementById('year').value;
+    let Address = document.getElementById('address').value;
+    let City = document.getElementById('city').value;
+    let Province = document.getElementById('province').value;
+    let Postalcode = document.getElementById('pcode').value;
+
+    // Checks that entries were filled
+    if (Fname == '') return;
+    if (Lname == '') return;
+    if (Month == '') return;
+    if (Day == '') return;
+    if (Year == '') return;
+    if (Address == '') return;
+    if (City == '') return;
+    if (Province == '') return;
+    if (Postalcode == '') return;
 
     // Stores rest of data to database
     let data ={
       uid: userid,
-      fname: document.getElementById('fname').value,
-      lname: document.getElementById('lname').value,
+      fname: Fname,
+      lname: Lname,
       birthday: {
-        month: document.getElementById('month').value,
-        day: document.getElementById('day').value,
-        year: document.getElementById('year').value
+        month: Month,
+        day: Day,
+        year: Year
       },
-      address: document.getElementById('address').value,
-      city: document.getElementById('city').value,
-      province: document.getElementById('province').value,
-      postalcode: document.getElementById('pcode').value
+      address: Address,
+      city: City,
+      province: Province,
+      postalcode: Postalcode
     };
 
     const db = firebase.firestore();

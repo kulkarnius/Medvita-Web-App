@@ -22,7 +22,7 @@ function init() {
   document.querySelector('#cameraBtn').addEventListener('click', openUserMedia);
   document.querySelector('#hangupBtn').addEventListener('click', hangUp);
   document.querySelector('#createBtn').addEventListener('click', createRoom);
-  document.querySelector('#joinBtn').addEventListener('click', joinRoom);
+  document.querySelector('#joinBtn').addEventListener('click', attemptJoinRoom);
   roomDialog = new mdc.dialog.MDCDialog(document.querySelector('#room-dialog'));
 }
 
@@ -117,6 +117,36 @@ function joinRoom() {
       await joinRoomById(roomId);
     }, { once: true });
   roomDialog.open();
+}
+
+function attemptJoinRoom() {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      const uid = user.uid;
+      console.log(uid);
+
+      var db = firebase.firestore();
+  
+      db.collection('patients').doc(`${uid}`)
+      .onSnapshot(function(doc) {       
+        console.log("Current data: ", doc.data());
+        roomId = doc.data().webrtckey;
+        console.log(roomId);
+    
+        if (roomId == '') {
+          // Patient put in waiting room 
+          console.log('Room does not exist');
+          //window.location = waitingroom.html;
+        } else {
+          // Successfully joined room
+          joinRoomById(roomId);
+        }
+      });
+    } else {
+      console.log('No user!');
+      return;
+    }
+  });
 }
 
 async function joinRoomById(roomId) {

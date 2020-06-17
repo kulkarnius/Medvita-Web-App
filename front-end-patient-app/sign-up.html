@@ -9,37 +9,7 @@
 	<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
 	<script src="init-firebase-auth.js"></script>
-	<script type="text/javascript">
-
-		function userSignUp() {
-		  // Retrieve email and password
-		  var email = document.getElementById('email').value;
-		  var password = document.getElementById('password').value;
-		  console.log(email);
-		  console.log(password);
-
-		  // Validate email and password
-		  if (email.length < 4) {
-			alert('Please enter a valid email address');
-			return;
-		  }
-		  if (password.length < 8) {
-			alert('Password must contain at least 8 characters');
-			return;
-		  }
-
-		  // Logs in user
-	      firebase.auth().createUserWithEmailAndPassword(email, password)
-		  .then(function(result) {
-			// Redirects to content page
-			window.location = "content.html";
-		  }).catch(function(error) {
-			// Error handling
-			alert('something went wrong');
-		  });
-		}
-
-	</script>
+	<script src="signup.js"></script>
 </head>
 
 <body>

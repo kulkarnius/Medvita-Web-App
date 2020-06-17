@@ -32,7 +32,7 @@
         firebase.auth().signInWithEmailAndPassword(email, password)
         .then(function(result) {
           // Redirects to content page
-          window.location = "content.html";
+          window.location = "firebase.html";
         }).catch(function(error) {
           // Error handling
           alert('Incorrect email or password');

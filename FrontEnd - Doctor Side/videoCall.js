@@ -233,6 +233,7 @@ async function hangUp(e) {
   document.querySelector('#currentRoom').innerText = '';
 
   // Remove key WebRTC key from patient database
+  const db = firebase.firestore();
   const clearKey = db.collection('patients').doc(`${patientId}`).update({
     webrtckey: ''
   });

@@ -17,6 +17,7 @@ let localStream = null;
 let remoteStream = null;
 let roomDialog = null;
 let roomId = null;
+let patientId = null;
 
 function init() {
   document.querySelector('#cameraBtn').addEventListener('click', openUserMedia);
@@ -68,9 +69,19 @@ async function createRoom() {
   await roomRef.set(roomWithOffer);
   roomId = roomRef.id;
   console.log(`New room created with SDP offer. Room ID: ${roomRef.id}`);
+
+  // Puts the roomId in the patients database
+  //const patientId = localStorage.getItem('patientId');
+  patientId = 'bVdsSQj58ehpkHhk155MyJjdY1s1'; // For testing purposes
+  const updKey = db.collection('patients').doc(`${patientId}`).update({
+    webrtckey: roomId
+  });
+
+  /*
   document.querySelector(
       '#currentRoom').innerText = `Current room is ${roomRef.id} - You are the caller!`;
-  // Code for creating a room above
+  */
+      // Code for creating a room above
 
   peerConnection.addEventListener('track', event => {
     console.log('Got remote track:', event.streams[0]);
@@ -220,6 +231,12 @@ async function hangUp(e) {
   document.querySelector('#createBtn').disabled = true;
   document.querySelector('#hangupBtn').disabled = true;
   document.querySelector('#currentRoom').innerText = '';
+
+  // Remove key WebRTC key from patient database
+  const db = firebase.firestore();
+  const clearKey = db.collection('patients').doc(`${patientId}`).update({
+    webrtckey: ''
+  });
 
   // Delete room on hangup
   if (roomId) {

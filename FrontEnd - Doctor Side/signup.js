@@ -1,24 +1,80 @@
-/*
-  Signs up the user, stores all of their entered data into database
-  Note: currently only creates an Firebase auth account, Jacob is 
-  working on implementing the backend that stores into database
-*/
+// Creates a Google Auth ID and stores data into corresponding doctor's database
 
 function signup()
 {  
   // Gets user info
-  var email = document.getElementById('email').value;
-  var password = document.getElementById('password').value;
-  console.log(email);
+  let Email = document.getElementById('email').value;
+  let password = document.getElementById('password').value;
+  let vpassword = document.getElementById('vpassword').value;
+  let Fname = document.getElementById('fname').value;
+  let Lname = document.getElementById('lname').value;
+  let Month = document.getElementById('month').value;
+  let Day = document.getElementById('day').value;
+  let Year = document.getElementById('year').value;
+  let Address = document.getElementById('address').value;
+  let City = document.getElementById('city').value;
+  let Province = document.getElementById('province').value;
+  let Postalcode = document.getElementById('pcode').value;
+
+  // Checks that entries were filled
+  if (Email == '' || password == '' || vpassword == '' || Fname == '' || Lname == '' || Month == ''
+  || Day == '' || Year == '' || Address == '' || City == ''|| Province == '' || Postalcode == '' ) {
+    document.getElementById('password').value = "";
+    document.getElementById('vpassword').value = "";
+    return;
+  }
+
+  // Incorrect password
+  if (password != vpassword) {
+    document.getElementById('password').value = "";
+    document.getElementById('vpassword').value = "";
+    alert("Passwords don't match");
+    return;
+  }
+
+  console.log(Email);
   console.log(password);
 
   // Signs up the user
-  firebase.auth().createUserWithEmailAndPassword(email, password)
+  firebase.auth().createUserWithEmailAndPassword(Email, password)
   .then(function(result) {
-    // Redirects to Vitals page
-    window.location = "Vitals.html";
+
+    let userid = result.user.uid;
+    console.log(userid);
+
+    // Stores rest of data to database
+    let data ={
+      uid: userid,
+      email: Email,
+      fname: Fname,
+      lname: Lname,
+      birthday: {
+        month: Month,
+        day: Day,
+        year: Year
+      },
+      address: Address,
+      city: City,
+      province: Province,
+      postalcode: Postalcode
+    };
+
+    const db = firebase.firestore();
+
+    const uinfo_ref = db.collection('doctors').doc(`${userid}`).set(data)
+    .then(function() {
+      // Got to vitals page
+      console.log(data);
+      window.location = "Vitals.html";
+    }).catch(function(error) {
+      // Couldn't put data in database
+      alert('Could not put data in database');
+      console.log('Error: ', error);
+    }); 
+
   }).catch(function(error) {
     // Error handling
-    alert('Something went wrong');
+    console.log('Error: ', error);
+    alert('Could not create an account');
   });
 }

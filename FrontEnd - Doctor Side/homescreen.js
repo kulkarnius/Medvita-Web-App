@@ -1,7 +1,11 @@
+
+// Create Firebase objects
 const db = firebase.firestore();
 const auth = firebase.auth();
 
+// Add an appointment
 function addApp(){
+    // Get data from page
     var FName = document.getElementById('FName').value;
     var LName = document.getElementById('LName').value;
     var Month = document.getElementById('Month').value;
@@ -19,6 +23,18 @@ function addApp(){
     console.log(Email);
     console.log(DateConcat);
 
+    // Checks that the user is valid and grabs their UID
+    /*  This code will eventually query through the patient
+        database and find the patient with a matching email.
+        It will then verify that it is the correct user by
+        checking that the names match, and it will grab
+        that patients uid.
+    */
+    // For testing purposes:
+    var patientUid = 'bVdsSQj58ehpkHhk155MyJjdY1s1';
+    console.log(patientUid);
+
+    // Senda data to database
     auth.onAuthStateChanged(function(user){
         if(user) {
             const uid = user.uid;
@@ -32,7 +48,8 @@ function addApp(){
             year: Year,
             time: Time,
             email: Email,
-            dateConcat: DateConcat
+            dateConcat: DateConcat,
+            uid: patientUid
             })
             .then(function(docRef) {
                 console.log("Document written with ID: ", DateConcat);
@@ -47,18 +64,27 @@ function addApp(){
 
 }
 
+// Displays the 5 newest doctor appointments
 function getSchedule() {
     auth.onAuthStateChanged(function(user){
         if(user) {
-            const uid = user.uid;
-            console.log('hello');
-            let schedRef = db.collection('doctors').doc(`${uid}`).collection('schedule');
+            const docUid = user.uid;
+            let schedRef = db.collection('doctors').doc(`${docUid}`).collection('schedule');
             schedRef.orderBy('dateConcat').limit(5).get()
             .then(function(querySnapshot) {
                 querySnapshot.forEach(function(doc) {
                     const data = doc.data();
                     console.log(data);
-                    // Output to HTML page
+                    // Output to HTML page (Lucas DOM manipulation goes here)
+
+                    // The patient uid, which is the variable that needs to be stored
+                    // in localStorage variable 'patientId' when the video button
+                    // is clicked, will be stored in data.uid. I'm not sure how you
+                    // will store the uid for each of the 5 patients, but you may not need
+                    // to. If you only have a 'start meeting' button for the
+                    // nearest meeting, you might be able to get away with
+                    // preemptively putting the variable in local storage
+                    // during the first pass-through of this code
                     console.log(data.email);
                 });
             })

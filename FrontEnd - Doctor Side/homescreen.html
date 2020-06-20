@@ -89,8 +89,18 @@
                         <label for="validationCustom04">Month</label>
                         <select class="custom-select" id="Month" required>
                           <option selected disabled value="">Choose...</option>
-                          <option>January</option>
-                          <option>February</option>
+                          <option>01</option>
+                          <option>02</option>
+                          <option>03</option>
+                          <option>04</option>
+                          <option>05</option>
+                          <option>06</option>
+                          <option>07</option>
+                          <option>08</option>
+                          <option>09</option>
+                          <option>10</option>
+                          <option>11</option>
+                          <option>12</option>
                         </select>
                         <div class="invalid-feedback">
                           Please select a valid month.
@@ -100,8 +110,11 @@
                         <label for="validationCustom04">Day</label>
                         <select class="custom-select" id="Day" required>
                           <option selected disabled value="">Choose...</option>
-                          <option>1</option>
-                          <option>2</option>
+                          <option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option>
+                          <option>08</option><option>09</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option>
+                          <option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option>
+                          <option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option>28</option>
+                          <option>29</option><option>30</option><option>31</option>
                         </select>
                         <div class="invalid-feedback">
                           Please select a valid day.
@@ -111,8 +124,8 @@
                         <label for="validationCustom04">Year</label>
                         <select class="custom-select" id="Year" required>
                           <option selected disabled value="">Choose...</option>
-                          <option>1988</option>
-                          <option>1992</option>
+                          <option>2020</option><option>2021</option><option>2022</option><option>2023</option><option>2024</option><option>2025</option>
+                          <option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option>
                         </select>
                         <div class="invalid-feedback">
                           Please select a valid year.
@@ -170,8 +183,10 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
+            
           </div>
-        
+          <button onclick="getSchedule()">Get Schedule</button>
+          <a href="Vitals.html" class="button--style-red">Video call</a></br>
 
 
 
@@ -222,11 +237,6 @@
         </div>  
     
     </div>
-
-    <script>
-            //firebase.initializeApp(firebaseConfig);
-            const db = firebase.firestore();
-    </script>
 
 </div>
         

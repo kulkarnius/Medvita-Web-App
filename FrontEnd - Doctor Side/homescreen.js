@@ -64,6 +64,41 @@ function addApp(){
 
 }
 
+
+
+
+                    //var AppList = document.querySelector('.AppShow');
+
+                    function displayApp(doc){
+
+                    var AppList = document.querySelector('.AppShow');
+                    
+                    let AppDisplay = document.createElement('AppShow');
+                    
+                    let App = document.createElement('span');
+                    
+                    AppDisplay.setAttribute('data-id', doc.id);
+                    
+                    App.textContent = doc.data().lName; 
+
+                    console.log(doc.data().lName);
+                    
+                    AppDisplay.appendChild(App);
+                    
+                    AppList.appendChild(AppDisplay);
+
+                    AppDisplay.replaceChild(App,App);
+
+                    console.log(doc.id);
+                    
+                    
+                    
+                    }
+
+
+
+
+
 // Displays the 5 newest doctor appointments
 function getSchedule() {
     auth.onAuthStateChanged(function(user){
@@ -85,7 +120,14 @@ function getSchedule() {
                     // nearest meeting, you might be able to get away with
                     // preemptively putting the variable in local storage
                     // during the first pass-through of this code
-                    console.log(data.email);
+                    
+
+                    displayApp(doc);
+
+                    
+
+
+                    
                 });
             })
             .catch(function(error){

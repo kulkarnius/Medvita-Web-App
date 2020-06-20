@@ -7,7 +7,6 @@ var TempList = document.querySelector('.TempShow');
 function displayTemp(doc){
     
 
-
 let TempDisplay = document.createElement('TempShow');
 
 let temperature = document.createElement('span');

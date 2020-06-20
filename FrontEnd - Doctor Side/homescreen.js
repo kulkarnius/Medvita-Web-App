@@ -67,33 +67,20 @@ function addApp(){
 
 
 
-                    //var AppList = document.querySelector('.AppShow');
+//var AppList = document.querySelector('.AppShow');
 
-                    function displayApp(doc){
-
-                    var AppList = document.querySelector('.AppShow');
-                    
-                    let AppDisplay = document.createElement('AppShow');
-                    
-                    let App = document.createElement('span');
-                    
-                    AppDisplay.setAttribute('data-id', doc.id);
-                    
-                    App.textContent = doc.data().lName; 
-
-                    console.log(doc.data().lName);
-                    
-                    AppDisplay.appendChild(App);
-                    
-                    AppList.appendChild(AppDisplay);
-
-                    AppDisplay.replaceChild(App,App);
-
-                    console.log(doc.id);
-                    
-                    
-                    
-                    }
+function displayApp(doc){
+    var AppList = document.querySelector('.AppShow');
+    let AppDisplay = document.createElement('AppShow');
+    let App = document.createElement('span');
+    AppDisplay.setAttribute('data-id', doc.id);
+    App.textContent = doc.data().lName; 
+    console.log(doc.data().lName);
+    AppDisplay.appendChild(App);
+    AppList.appendChild(AppDisplay);
+    AppDisplay.replaceChild(App,App);
+    console.log(doc.id);
+}
 
 
 

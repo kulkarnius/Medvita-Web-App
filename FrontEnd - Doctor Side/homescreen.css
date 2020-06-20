@@ -1,6 +1,6 @@
 body{
 
-    background-image: url("https://images.unsplash.com/photo-1557683311-eac922347aa1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2515&q=80");
+    background: linear-gradient(to left, #12c2e9, #c471ed, #f64f59); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    background-size: cover;
     background-size: cover;
     background-position: center;
     color:white;
@@ -29,7 +29,7 @@ text-align: center;
 .container{
     /* border: 10px solid white; */
     /* border-radius: 25px; */
-    padding-top: 17%;
+    margin-top: 12.4%;
 
 }
 #appAlert{

@@ -1,7 +1,9 @@
-
 // Create Firebase objects
 const db = firebase.firestore();
 const auth = firebase.auth();
+
+// Stores UID of the patients listed in schedule
+var scheduleUid = new Array(5);
 
 // Add an appointment
 function addApp(){
@@ -24,15 +26,30 @@ function addApp(){
     console.log(DateConcat);
 
     // Checks that the user is valid and grabs their UID
-    /*  This code will eventually query through the patient
-        database and find the patient with a matching email.
-        It will then verify that it is the correct user by
-        checking that the names match, and it will grab
-        that patients uid.
-    */
-    // For testing purposes:
-    var patientUid = 'bVdsSQj58ehpkHhk155MyJjdY1s1';
-    console.log(patientUid);
+   var patientUid = '';
+   var patientsRef = db.collection("patients");
+   patientsRef.where("email", "==", Email)
+   .get()
+   .then(function(querySnapshot) {
+       querySnapshot.forEach(function(doc) {
+           // Checks that first name and last name match
+           let data = doc.data();
+           if (data.fName == FName && data.lName == LName) {
+             patientUid = data.uid;
+             console.log(patientUid);
+           } else {
+             alert ('No patient found');
+             console.log('Names do not match');
+             return;
+           }
+           console.log(doc.id, " => ", data);
+       });
+   })
+   .catch(function(error) {
+       alert('No patient found');
+       console.log("Error getting documents: ", error);
+       return;
+   });
 
     // Senda data to database
     auth.onAuthStateChanged(function(user){
@@ -91,6 +108,7 @@ function getSchedule() {
     auth.onAuthStateChanged(function(user){
         if(user) {
             const docUid = user.uid;
+            let count = 0;
             let schedRef = db.collection('doctors').doc(`${docUid}`).collection('schedule');
             schedRef.orderBy('dateConcat').limit(5).get()
             .then(function(querySnapshot) {
@@ -108,13 +126,10 @@ function getSchedule() {
                     // preemptively putting the variable in local storage
                     // during the first pass-through of this code
                     
-
                     displayApp(doc);
-
-                    
-
-
-                    
+                    scheduleUid[count] = data.uid;
+                    console.log('Patients UID: ' + data.uid);
+                    count++;
                 });
             })
             .catch(function(error){
@@ -125,25 +140,3 @@ function getSchedule() {
         }
     });
 }
-
-
-
-
-// function login()
-// {  
-//   // Gets user info
-//   var email = document.getElementById('username').value;
-//   var password = document.getElementById('password').value;
-//   console.log(email);
-//   console.log(password);
-
-//   // Signs up the user
-//   firebase.auth().signInWithEmailAndPassword(email, password)
-//   .then(function(result) {
-//     // Redirects to Vitals page
-//     window.location = "Vitals.html";
-//   }).catch(function(error) {
-//     // Error handling
-//     alert('Something went wrong');
-//   });
-// }

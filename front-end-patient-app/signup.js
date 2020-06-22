@@ -2,14 +2,18 @@ function userSignUp() {
   // Retrieve email and password
   var Email = document.getElementById('email').value;
   var password = document.getElementById('password').value;
+  var FName = document.getElementById('fName').value;
+  var LName = document.getElementById('lName').value;
 
-  if (Email == '' || password == '') {
+  if (Email == '' || password == '' || FName == '' || LName == '') {
     alert('Please fill in all entries');
     return;
   }
 
   console.log(Email);
   console.log(password);
+  console.log(FName);
+  console.log(LName);
 
   // Validate email and password
   if (Email.length < 4) {
@@ -31,9 +35,11 @@ function userSignUp() {
     let docRef = db.collection('patients').doc(`${userId}`);
 
     let data = {
+      fname: FName,
+      lname: LName,
       email: Email,
       uid: userId,
-      webrtckey: null
+      webrtckey: ''
     };
 
     docRef.set(data).then(function(){

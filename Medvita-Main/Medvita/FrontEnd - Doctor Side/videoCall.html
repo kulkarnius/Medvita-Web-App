@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Doctor-Patient Video Call</title>
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="init.js"></script>
+    <link rel="stylesheet" type="text/css" href="videoCall.css">
+    <script src="https://cdn.tiny.cloud/1/71onv8jg7xvdivy8l5icb1stu2vbc1pdt9m6oikgbybsmaib/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    
+    <script>
+        tinymce.init({
+          selector: '#mytextarea'
+        });
+      </script>
+
+
+</head>
+<body>
+   
+
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-dark "style ="background: linear-gradient(to left, #12c2e9, #c471ed, #f64f59); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */">
+            <a class="navbar-brand" href="#">Medvita</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link" href="homescreen.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="videoCall.html">Dashboard</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" href="#">Patient Profiles</a>
+                </li>
+              </ul>
+              <form class="form-inline my-2 my-lg-0">
+                <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search"> -->
+                <!-- <button class="btn btn-outline-primary my-2 my-sm-0" type="button">Logout</button> -->
+                <a class="btn btn-outline-light" href="login.html" role="button">Logout</a>
+              </form>
+            </div>
+          </nav>
+    
+    </div>
+
+
+
+<div class="row" id="vid">
+    <div class="col-md-6">
+    
+
+        <!-- id ="mainMessage (DOWN BELOW)" -->
+
+    <h1 class="display-4" >MedVita Walk-In Clinic</h1>
+
+
+<div id="buttons">
+    <button class="mdc-button mdc-button--raised" id="cameraBtn">
+        <i class="material-icons mdc-button__icon" aria-hidden="true">perm_camera_mic</i>
+        <span class="mdc-button__label">Activate camera & microphone</span>
+    </button>
+    <button class="mdc-button mdc-button--raised" disabled id="createBtn">
+        <i class="material-icons mdc-button__icon" aria-hidden="true">group_add</i>
+        <span class="mdc-button__label">Begin Session</span>
+    </button>
+    <button class="mdc-button mdc-button--raised" disabled id="joinBtn">
+        <i class="material-icons mdc-button__icon" aria-hidden="true">group</i>
+        <span class="mdc-button__label">Join room</span>
+    </button>
+    <button class="mdc-button mdc-button--raised" disabled id="hangupBtn">
+        <i class="material-icons mdc-button__icon" aria-hidden="true">close</i>
+        <span class="mdc-button__label">End Session</span>
+    </button>
+</div>
+<div>
+    <span id="currentRoom"></span>
+</div>
+<div class = "container">
+
+    <div id="videos">
+        <video id="localVideo" muted autoplay playsinline></video>
+        <video id="remoteVideo" autoplay playsinline></video>
+    </div>
+
+</div>
+
+<div class="mdc-dialog"
+     id="room-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="my-dialog-title">Join room</h2>
+            <div class="mdc-dialog__content" id="my-dialog-content">
+                Enter ID for room to join:
+                <div class="mdc-text-field">
+                    <input type="text" id="room-id" class="mdc-text-field__input">
+                    <label class="mdc-floating-label" for="my-text-field">Room ID</label>
+                    <div class="mdc-line-ripple"></div>
+                </div>
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">Cancel</span>
+                </button>
+                <button id="confirmJoinBtn" type="button" class="mdc-button mdc-dialog__button"
+                        data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label">Join</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+</div>
+<div class="col-md-6">
+    <div class="display-4" id="header">        Vital Data</div>
+<div class = "container">
+    <p>
+        <a class="btn btn-outline-light" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="true" aria-controls="multiCollapseExample1">Toggle Temperature</a>
+        <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Toggle Oxygen</button>
+        <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Toggle both sets of Data</button>
+      </p>
+      <div class="row">
+        <div class="col">
+          <div class="collapse multi-collapse collapse show" id="multiCollapseExample1">
+            <div class="card card-body">
+                <div class="container">
+                    <div class="TempBox">
+                    <h1 class = 'Patient'>Temperature Data</h1>
+                    
+                    <div class = "content">
+                    
+                    <h3 class='Patient'>Current Temperature (°C):</h3>
+                    
+                    <div class='TempShow'></div>
+                    
+                    <div style="text-align: center;">
+                        <input onClick="temp()", class="btn btn-outline-light" type="button" value="Fetch">
+                    </div>
+                    
+                    
+                    </div>
+                    
+                    </div>  
+                    </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="collapse multi-collapse collapse show" id="multiCollapseExample2">
+            <div class="card card-body">
+                <div class="container">
+                    <div class="TempBox2">
+                    <h1 class = 'Patient'>Oxygen Data</h1>
+                    
+                    <div class = "content">
+                    
+                    <h3 class='Patient'>Current O₂ Saturation (%):</h3>
+                    
+                    <div class='TempShow2'></div>
+                    
+                    <div style="text-align: center;">
+                        <input onClick="oxygen()", class="btn btn-outline-light" type="button" value="Fetch">
+                    </div>
+                    
+                    
+                    </div>
+                    
+                    </div>  
+                    </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+</div>
+
+
+<div class="row">
+<div class="col-md-6" id="notes">
+    <form method="post">
+        <textarea id="mytextarea" name="mytextarea">
+          Welcome to Medvita!
+        </textarea>
+      </form>
+
+    </div>
+</div>
+
+
+
+
+<script>
+//firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+</script>
+
+
+<script src="video.js"></script>
+<script src="videoCall.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

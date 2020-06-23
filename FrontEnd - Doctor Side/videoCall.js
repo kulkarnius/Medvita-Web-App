@@ -71,8 +71,7 @@ async function createRoom() {
   console.log(`New room created with SDP offer. Room ID: ${roomRef.id}`);
 
   // Puts the roomId in the patients database
-  //const patientId = localStorage.getItem('patientId');
-  patientId = 'bVdsSQj58ehpkHhk155MyJjdY1s1'; // For testing purposes
+  patientId = localStorage.getItem('patientId');
   const updKey = db.collection('patients').doc(`${patientId}`).update({
     webrtckey: roomId
   });

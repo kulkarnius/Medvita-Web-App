@@ -5,6 +5,7 @@ const auth = firebase.auth();
 // Stores UID of the patients listed in schedule
 var scheduleUid = new Array(5);
 var doctor = '';
+var count = 0;
 
 // Add an appointment
 function addApp(){
@@ -128,25 +129,45 @@ function displayApp(doc){
   console.log(doc.id);
   $('.AppShow').append(doc.data().patient).
   append("    ").
-  append("<button class='btn btn-outline-light'>Begin Appointment</button>").
+  append("<button class='btn btn-outline-light' onClick='meeting" + count + "()'>Begin Appointment</button>").
   append("<br>");
   
 }
 
+function meeting0() {
+  localStorage.setItem("patientId", scheduleUid[0]);
+  window.location = "videoCall.html";
+}
 
+function meeting1() {
+  localStorage.setItem("patientId", scheduleUid[1]);
+  window.location = "videoCall.html";
+}
+
+function meeting2() {
+  localStorage.setItem("patientId", scheduleUid[2]);
+  window.location = "videoCall.html";
+}
+
+function meeting3() {
+  localStorage.setItem("patientId", scheduleUid[3]);
+  window.location = "videoCall.html";
+}
+
+function meeting4() {
+  localStorage.setItem("patientId", scheduleUid[4]);
+  window.location = "videoCall.html";
+}
 
 
 // Displays the 5 newest doctor appointments
 function getSchedule() {
-  
   $('.AppShow').html("");
-  
-
+  count = 0;
 
   auth.onAuthStateChanged(function(user){
     if(user) {
       const docUid = user.uid;
-      let count = 0;
       let schedRef = db.collection('doctors').doc(`${docUid}`).collection('schedule');
       schedRef.orderBy('dateConcat').limit(5).get()
       .then(function(querySnapshot) {
@@ -165,8 +186,8 @@ function getSchedule() {
           // during the first pass-through of this code
 
           displayApp(doc);
-          scheduleUid[count] = data.uid;
-          console.log('Patients UID: ' + data.uid);
+          scheduleUid[count] = data.patientuid;
+          console.log('Patients UID: ' + data.patientuid);
           count++;
         });
       })

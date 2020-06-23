@@ -5,6 +5,7 @@ const auth = firebase.auth();
 // Stores UID of the patients listed in schedule
 var scheduleUid = new Array(5);
 var doctor = '';
+var docUid = '';
 var count = 0;
 
 // Add an appointment
@@ -174,7 +175,7 @@ function getSchedule() {
 
   auth.onAuthStateChanged(function(user){
     if(user) {
-      const docUid = user.uid;
+      docUid = user.uid;
       let schedRef = db.collection('doctors').doc(`${docUid}`).collection('schedule');
       schedRef.orderBy('dateConcat').limit(5).get()
       .then(function(querySnapshot) {
@@ -206,3 +207,14 @@ function getSchedule() {
     }
   });
 }
+
+getSchedule();
+
+auth.onAuthStateChanged(function(user){
+  if(user) {
+    db.collection('doctors').doc(`${docUid}`).collection('schedule')
+        .onSnapshot(function(querySnapshot) {
+          getSchedule();
+    });
+  }
+});

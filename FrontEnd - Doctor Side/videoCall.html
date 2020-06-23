@@ -134,13 +134,13 @@
     <div class="display-4" id="header">        Vital Data</div>
 <div class = "container">
     <p>
-        <a class="btn btn-outline-light" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Toggle Temperature</a>
-        <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Toggle Oxygen</button>
+        <a class="btn btn-outline-light" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="true" aria-controls="multiCollapseExample1">Toggle Temperature</a>
+        <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="true" aria-controls="multiCollapseExample2">Toggle Oxygen</button>
         <button class="btn btn-outline-light" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Toggle both sets of Data</button>
       </p>
       <div class="row">
         <div class="col">
-          <div class="collapse multi-collapse" id="multiCollapseExample1">
+          <div class="collapse multi-collapse collapse show" id="multiCollapseExample1">
             <div class="card card-body">
                 <div class="container">
                     <div class="TempBox">
@@ -153,7 +153,7 @@
                     <div class='TempShow'></div>
                     
                     <div style="text-align: center;">
-                        <input onClick="temp()", class="btn btn-outline-light" type="button" value="Refresh">
+                        <input onClick="temp()", class="btn btn-outline-light" type="button" value="Fetch">
                     </div>
                     
                     
@@ -166,7 +166,7 @@
           </div>
         </div>
         <div class="col">
-          <div class="collapse multi-collapse" id="multiCollapseExample2">
+          <div class="collapse multi-collapse collapse show" id="multiCollapseExample2">
             <div class="card card-body">
                 <div class="container">
                     <div class="TempBox2">
@@ -179,7 +179,7 @@
                     <div class='TempShow2'></div>
                     
                     <div style="text-align: center;">
-                        <input onClick="oxygen()", class="btn btn-outline-light" type="button" value="Refresh">
+                        <input onClick="oxygen()", class="btn btn-outline-light" type="button" value="Fetch">
                     </div>
                     
                     

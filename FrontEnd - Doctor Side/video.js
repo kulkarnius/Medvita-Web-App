@@ -1,5 +1,5 @@
 
-function temp(){
+
 
 var TempList = document.querySelector('.TempShow');
 
@@ -21,9 +21,9 @@ db.collection("Temperature").doc("milk")
       
     });
 
-}
 
-function oxygen(){
+
+
 
 var TempList2 = document.querySelector('.TempShow2');
 
@@ -42,4 +42,4 @@ function displayTemp2(doc){
       displayTemp2(doc)
       
     });
-}
+

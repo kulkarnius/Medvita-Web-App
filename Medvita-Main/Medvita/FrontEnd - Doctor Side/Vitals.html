@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="Vitals.css">	
+
+<script>
+    function logout() {
+      firebase.auth().signOut()
+      .then(function(){
+        console.log('User signed out');
+        window.location = 'login.html';
+      }).catch(function(error){
+        console.log('Error: ', error);
+        alert('Could no sign out!');
+      });
+    }
+</script>
+
+<title>Temperature Test</title>
+
+<!-- <meta http-equiv="refresh" content="30" > -->
+
+</head>
+
+<body>
+
+
+
+
+    
+    <div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+            <a class="nav-link active" href="#">Vital Data</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="videoCall.html">Video Conferencing</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">Patient Information</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Profile</a>
+            </li>
+            
+                <li class="nav-item">
+                <button onClick="logout()">Logout</button>
+                </li>
+                
+              
+        </ul>
+
+    </div>
+<div class="container">
+<div class="TempBox"> //AppBox
+<h1 class = 'Patient'>Temperature Data</h1>
+
+<div class = "content">
+
+<h3 class='Patient'>The Patient's Current Temperature Data in degrees Celcius:</h3>
+
+<div class='TempShow'></div> //AppShow
+
+<div style="text-align: center;">
+    <button onClick="window.location.reload();", class="button">Obtain Updated Temperature</button>
+    
+</div>
+
+
+</div>
+
+</div>  
+</div>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
+
+            <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+
+                apiKey: "AIzaSyDx8Ix9D_ROmcJBA1HpKDiR_iJcbGMrZHI",
+                authDomain: "medtech-277402.firebaseapp.com",
+
+                databaseURL: "https://medtech-277402.firebaseio.com",
+
+                projectId: "medtech-277402",
+
+                storageBucket: "medtech-277402.appspot.com",
+
+                messagingSenderId: "692417874019",
+
+                appId: "1:692417874019:web:4c11f9a73eea0a5f1d9056",
+                
+                measurementId: "G-2M69KGDGWB"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            firebase.analytics();
+            </script>
+            <script src ='VitalsBackend.js'></script>
+
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

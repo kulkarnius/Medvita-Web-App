@@ -29,10 +29,24 @@ text-align: center;
 .container{
     /* border: 10px solid white; */
     /* border-radius: 25px; */
-    margin-top: 12.4%;
+    margin-top: 12.4%; */
 
 }
 #appAlert{
 
     margin-top: 7%;
+}
+.AppShow{
+
+font-size: 42px;
+
+
+}
+#nopadding{
+
+    margin-top: 0%;
+}
+#patientBox{
+
+    padding-left: 2%;
 }

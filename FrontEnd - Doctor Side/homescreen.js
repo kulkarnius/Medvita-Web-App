@@ -116,24 +116,33 @@ function addApp(){
 //var AppList = document.querySelector('.AppShow');
 
 function displayApp(doc){
-  var AppList = document.querySelector('.AppShow');
-  let AppDisplay = document.createElement('AppShow');
-  let App = document.createElement('span');
-  AppDisplay.setAttribute('data-id', doc.id);
-  App.textContent = doc.data().lName; 
-  console.log(doc.data().lName);
-  AppDisplay.appendChild(App);
-  AppList.appendChild(AppDisplay);
-  AppDisplay.replaceChild(App,App);
+  // var AppList = document.querySelector('.AppShow');
+  // let AppDisplay = document.createElement('AppShow');
+  // let App = document.createElement('span');
+  // AppDisplay.setAttribute('data-id', doc.id);
+  // App.textContent = doc.data().patient +"<br>"; 
+  // console.log(doc.data().patient);
+  // AppDisplay.appendChild(App);
+  // AppList.appendChild(AppDisplay);
+  // AppDisplay.replaceChild(App,App);
   console.log(doc.id);
+  $('.AppShow').append(doc.data().patient).
+  append("    ").
+  append("<button class='btn btn-outline-light'>Begin Appointment</button>").
+  append("<br>");
+  
 }
-
 
 
 
 
 // Displays the 5 newest doctor appointments
 function getSchedule() {
+  
+  $('.AppShow').html("");
+  
+
+
   auth.onAuthStateChanged(function(user){
     if(user) {
       const docUid = user.uid;

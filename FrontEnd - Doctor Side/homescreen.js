@@ -128,8 +128,15 @@ function displayApp(doc){
   // AppDisplay.replaceChild(App,App);
   console.log(doc.id);
   $('.AppShow').append(doc.data().patient).
-  append("    ").
+  append("&nbsp;").
   append("<button class='btn btn-outline-light' onClick='meeting" + count + "()'>Begin Appointment</button>").
+  append('&nbsp;').
+  append(doc.data().month).
+  append("/").
+  append(doc.data().day).
+  append("&nbsp;@&nbsp;").
+  append(doc.data().time).
+  append("<br>").
   append("<br>");
   
 }

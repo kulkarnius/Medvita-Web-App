@@ -38,7 +38,7 @@ text-align: center;
 }
 .AppShow{
 
-font-size: 42px;
+font-size: 25px;
 
 
 }
@@ -48,5 +48,8 @@ font-size: 42px;
 }
 #patientBox{
 
-    padding-left: 2%;
+    text-align: center;
+}
+.Patient{
+    margin-bottom: 5%;
 }

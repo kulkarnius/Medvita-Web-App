@@ -5,8 +5,7 @@ const auth = firebase.auth();
 // Stores UID of the patients listed in schedule
 var scheduleUid = new Array(5);
 var doctor = '';
-var docUid = '';
-var count = 0;
+var patientUid = '';
 
 // Add an appointment
 function addApp(){
@@ -20,15 +19,6 @@ function addApp(){
   var Time = document.getElementById('Time').value;
   var Email = document.getElementById('Email').value;
   var DateConcat = Year + Month + Day + Time.replace(':','');
-
-  console.log(FName);
-  console.log(LName);
-  console.log(Month);
-  console.log(Day);
-  console.log(Year);
-  console.log(Time);
-  console.log(Email);
-  console.log(DateConcat);
 
   // Checks that the user is valid and grabs their UID
   var patientUid = '';
@@ -112,25 +102,28 @@ function addApp(){
   });
 }
 
-
-
-
-//var AppList = document.querySelector('.AppShow');
+function attemptJoinMeeting() {
+  console.log('Joining meeting...');
+  // Check for WebRTCkey
+  db.collection('patients').doc(`${patientUid}`)
+  .get()
+  .then(function(doc) {
+    console.log("Patient's user data: ", doc.data());
+    if (doc.data().webrtckey != '') {
+      // Doctor has created session
+      localStorage.setItem("webrtckey", doc.data().webrtckey);
+      window.location = "videoCall.html";
+    } else {
+      // Key does not exist
+      window.location = "waitingRoom.html";
+    }
+  });
+}
 
 function displayApp(doc){
-  // var AppList = document.querySelector('.AppShow');
-  // let AppDisplay = document.createElement('AppShow');
-  // let App = document.createElement('span');
-  // AppDisplay.setAttribute('data-id', doc.id);
-  // App.textContent = doc.data().patient +"<br>"; 
-  // console.log(doc.data().patient);
-  // AppDisplay.appendChild(App);
-  // AppList.appendChild(AppDisplay);
-  // AppDisplay.replaceChild(App,App);
-  console.log(doc.id);
-  $('.AppShow').append(doc.data().patient).
+  $('.AppShow').append(doc.data().doctor).
   append("&nbsp;").
-  append("<button class='btn btn-outline-light' onClick='meeting" + count + "()'>Begin Appointment</button>").
+  append("<button class='btn btn-outline-light' onClick='attemptJoinMeeting()'>Begin Appointment</button>").
   append('&nbsp;').
   append(doc.data().month).
   append("/").
@@ -139,64 +132,24 @@ function displayApp(doc){
   append(doc.data().time).
   append("<br>").
   append("<br>");
-  
 }
 
-function meeting0() {
-  localStorage.setItem("patientId", scheduleUid[0]);
-  window.location = "videoCall.html";
-}
-
-function meeting1() {
-  localStorage.setItem("patientId", scheduleUid[1]);
-  window.location = "videoCall.html";
-}
-
-function meeting2() {
-  localStorage.setItem("patientId", scheduleUid[2]);
-  window.location = "videoCall.html";
-}
-
-function meeting3() {
-  localStorage.setItem("patientId", scheduleUid[3]);
-  window.location = "videoCall.html";
-}
-
-function meeting4() {
-  localStorage.setItem("patientId", scheduleUid[4]);
-  window.location = "videoCall.html";
-}
-
-
-// Displays the 5 newest doctor appointments
+// Displays the 5 newest doctor's appointments for the patients
 function getSchedule() {
   $('.AppShow').html("");
   count = 0;
 
+  // Detects Firebase Auth user
   auth.onAuthStateChanged(function(user){
     if(user) {
-      docUid = user.uid;
-      let schedRef = db.collection('doctors').doc(`${docUid}`).collection('schedule');
-      schedRef.orderBy('dateConcat').limit(5).get()
+      patientUid = user.uid;
+      // Get the schedule for the current user
+      db.collection('patients').doc(`${patientUid}`).collection('schedule')
+      .orderBy('dateConcat').limit(5).get()
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          const data = doc.data();
-          console.log(data);
-          // Output to HTML page (Lucas DOM manipulation goes here)
-
-          // The patient uid, which is the variable that needs to be stored
-          // in localStorage variable 'patientId' when the video button
-          // is clicked, will be stored in data.uid. I'm not sure how you
-          // will store the uid for each of the 5 patients, but you may not need
-          // to. If you only have a 'start meeting' button for the
-          // nearest meeting, you might be able to get away with
-          // preemptively putting the variable in local storage
-          // during the first pass-through of this code
-
+          console.log(doc.data());
           displayApp(doc);
-          scheduleUid[count] = data.patientuid;
-          console.log('Patients UID: ' + data.patientuid);
-          count++;
         });
       })
       .catch(function(error){
@@ -212,9 +165,9 @@ getSchedule();
 
 auth.onAuthStateChanged(function(user){
   if(user) {
-    db.collection('doctors').doc(`${docUid}`).collection('schedule')
-        .onSnapshot(function(querySnapshot) {
-          getSchedule();
+    db.collection('patients').doc(`${patientUid}`)
+    .onSnapshot(function(querySnapshot) {
+      getSchedule();
     });
   }
 });

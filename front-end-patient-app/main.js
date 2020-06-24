@@ -34,7 +34,7 @@ function createWindow() {
         childWindow.show()
     });*/
     parentWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'firebase.html'),
+        pathname: path.join(__dirname, 'homescreen.html'),
         protocol: 'file',
         slashes: true
     }));

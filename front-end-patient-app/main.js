@@ -9,6 +9,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const url = require("url");
 const ipc = electron.ipcMain;
+const dialog = electron.dialog;
 
 let parentWindow, childWindow;
 
@@ -54,6 +55,10 @@ ipc.on('close-me', function() {
     if (process.platform !== 'darwin') {
         app.quit()
     }
+})
+
+ipc.on('open-error-dialog', function(){
+    dialog.showErrorBox('Invalid Login', "Incorrect Username/Password")
 })
 
 app.on('ready', createWindow);

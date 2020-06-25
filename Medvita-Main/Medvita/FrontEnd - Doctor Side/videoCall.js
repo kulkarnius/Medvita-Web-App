@@ -1,3 +1,37 @@
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+var doctorUid = '';
+var patientUid = localStorage.getItem('patientId');
+var dateConcat = localStorage.getItem('dateConcat');
+
+(function(){
+  auth.onAuthStateChanged(function(user) {
+    doctorUid = user.uid;
+    
+    console.log('Doctor Uid: ', doctorUid);
+    console.log('Patient Uid: ', patientUid);
+    console.log('Date Concatenation: ', dateConcat);
+
+    // Listens and displays patient's data
+    var TempList = document.querySelector('.TempShow');
+    var TempList2 = document.querySelector('.TempShow2');
+
+    function displayTemp(doc) {
+      $('.TempShow').html('').append(doc.data().temperature);
+      $('.TempShow2').html('').append(doc.data().tempdata);
+    }
+
+    db.collection('doctors').doc(`${doctorUid}`)
+    .collection('schedule').doc(`${dateConcat}`)
+    .onSnapshot(function(doc) {       
+      console.log("Current data: ", doc.data());
+      displayTemp(doc);
+    });
+  });
+})();
+
+// Video services
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
 
 const configuration = {
@@ -30,7 +64,6 @@ function init() {
 async function createRoom() {
   document.querySelector('#createBtn').disabled = true;
   document.querySelector('#joinBtn').disabled = true;
-  const db = firebase.firestore();
   const roomRef = await db.collection('rooms').doc();
 
   console.log('Create PeerConnection with configuration: ', configuration);
@@ -70,17 +103,9 @@ async function createRoom() {
   roomId = roomRef.id;
   console.log(`New room created with SDP offer. Room ID: ${roomRef.id}`);
 
-  // Puts the roomId in the patients database
-  patientId = localStorage.getItem('patientId');
-  const updKey = db.collection('patients').doc(`${patientId}`).update({
+  const updKey = db.collection('patients').doc(`${patientUid}`).update({
     webrtckey: roomId
   });
-
-  /*
-  document.querySelector(
-      '#currentRoom').innerText = `Current room is ${roomRef.id} - You are the caller!`;
-  */
-      // Code for creating a room above
 
   peerConnection.addEventListener('track', event => {
     console.log('Got remote track:', event.streams[0]);
@@ -130,7 +155,6 @@ function joinRoom() {
 }
 
 async function joinRoomById(roomId) {
-  const db = firebase.firestore();
   const roomRef = db.collection('rooms').doc(`${roomId}`);
   const roomSnapshot = await roomRef.get();
   console.log('Got room:', roomSnapshot.exists);
@@ -232,14 +256,12 @@ async function hangUp(e) {
   document.querySelector('#currentRoom').innerText = '';
 
   // Remove key WebRTC key from patient database
-  const db = firebase.firestore();
-  const clearKey = db.collection('patients').doc(`${patientId}`).update({
+  const clearKey = db.collection('patients').doc(`${patientUid}`).update({
     webrtckey: ''
   });
 
   // Delete room on hangup
   if (roomId) {
-    const db = firebase.firestore();
     const roomRef = db.collection('rooms').doc(roomId);
     const calleeCandidates = await roomRef.collection('calleeCandidates').get();
     calleeCandidates.forEach(async candidate => {

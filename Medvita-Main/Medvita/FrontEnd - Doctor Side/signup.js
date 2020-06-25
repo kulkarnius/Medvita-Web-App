@@ -65,7 +65,7 @@ function signup()
     .then(function() {
       // Got to vitals page
       console.log(data);
-      window.location = "Vitals.html";
+      window.location = "homescreen.html";
     }).catch(function(error) {
       // Couldn't put data in database
       alert('Could not put data in database');

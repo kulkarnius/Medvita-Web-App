@@ -1,18 +1,9 @@
-//TODO: make something like 't for temp, b for blink'
-//and make sure it actually works
-//kinda like one of those loops in the c++ books
-//forever lookin for input if you will (calling itself at the end)
-
 // requires
 const SerialPort = require('serialport')
-const prompt = require('prompt');
+//const prompt = require('prompt');
 //activating port (currently hardcoded to COM3)
-try {
-  const port = new SerialPort('COM3', {baudRate: 4800})
-} catch (err) {
-  //console.log('Unable to open connection to device!')
-  throw "Unable to connect to device!"
-}
+const port = new SerialPort('COM3', {baudRate: 4800})
+
 
 
 //firebase activation
@@ -20,7 +11,7 @@ const admin = require('firebase-admin');
 //so i am a dumbass
 //and idk how to make the thing work referring to a json file like everything else
 //so i did it this very jank way
-let serviceAccount = require('C:/Users/Dhananjay/Documents/GitHub/medtech/ion/medtech/Firestorekey.json'); //pls make not jank
+let serviceAccount = require('./Firestorekey.json'); //pls make not jank
 
 
 // Janky sleep function lol (TODO: make unjank)
@@ -91,6 +82,117 @@ function write_to_port (input_char) {
   })
 }
 
+
+
+
+
+
+
+
+function write_to_firestore(temp_data, docRef) {
+  let settemp = docRef.set ({
+    temperature: `${temp_data}`
+  }, {merge: true});
+}
+
+//writes temp to firestore - requires the patient's id, the appointment data (concanated), and what to write to the sensor (should be '1') as of 2020/06/25
+function write_temp_to_firestore(patient_id, appointment_date, input_char) {
+  //firebase init
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+  let db = admin.firestore();
+
+  //specifiying the doc to write the temp
+  let docRef = db.collection('patients').doc(`${patient_id}`)
+  .collection('schedule').doc(`${appointment_date}`);
+  write_to_port(`${input_char}`)
+
+  //extra variables for port reading
+  out_array = [];
+  total_text = ''
+  
+  // reading from port 
+  //pls ignore all the console.logs - they're here for debugging
+  port.on('readable', function () {
+    sleep(400) //optimize this - prevents reading buffer prematurely (very jank though)
+    out_array.push((port.read().toString()));
+    //console.log(out_array)
+    total_text = out_array.join('')
+    //console.log(total_text)
+    total_text  = total_text.replace(/Selected1\n/, '')
+    //console.log(total_text)
+    //console.log(T_from_ADC(bin_to_dec(total_text)))
+
+    potato = 0 //potato is converted to an str and then written to firebase
+    potato = T_from_ADC(bin_to_dec(total_text))
+    //console.log(potato.toString())
+    write_to_firestore(potato.toString(), docRef)
+  })
+}
+
+//le grand function call
+write_temp_to_firestore('ZOhrTVOJq6b1u0CaY67JAZn02aw2', '202006261435', '1')
+
+// dunno what this is but it seems important for the port
+function onErr(err) {
+    console.log(err);
+    return 1;
+}
+
+// Exits program after some amout of milliseconds
+setTimeout((function() {
+  return process.exit(22);
+}), 5000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//ignore this - legacy code
+
+/*
+patientid = 'Bkd9DGFVsPcfraPEmRJoFOxRlLZ2' //pls unhardcode
+apptdate = '202001010730' //unhardcode this pls
+let docRef = db.collection('patients').doc(`${patientid}`)
+.collection('schedule').doc(`${apptdate}`); //patient id and scheudle are hardcoded because i suck
+*/
+
+/*
+//extra variables for port reading
+out_array = [];
+total_text = ''
+// reading from port 
+//pls ignore all the console.logs - they're here for debugging
+port.on('readable', function () {
+  sleep(400) //optimize this - prevents reading buffer prematurely (very jank though)
+  out_array.push((port.read().toString()));
+  //console.log(out_array)
+  total_text = out_array.join('')
+  //console.log(total_text)
+  total_text  = total_text.replace(/Selected1\n/, '')
+  //console.log(total_text)
+  //console.log(T_from_ADC(bin_to_dec(total_text)))
+
+  potato = 0 //potato is converted to an str and then written to firebase
+  potato = T_from_ADC(bin_to_dec(total_text))
+  //console.log(potato.toString())
+  write_to_firestore(potato.toString())
+})
+*/
+
+
+/*
 // this actually doesnt work lol
 //the issue is that it reads twice
 //and return doesnt like that
@@ -119,75 +221,9 @@ function read_from_port () {
   console.log(return_array)
   //console.log(T_from_ADC(bin_to_dec(return_array[return_array.length - 1])))
 }
+*/
+//write_to_port('1')
 
-write_to_port('1')
-
-
-//firebase crap
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
-let db = admin.firestore();
-
-patientid = 'Bkd9DGFVsPcfraPEmRJoFOxRlLZ2' //pls unhardcode
-apptdate = '202001010730' //unhardcode this pls
-let docRef = db.collection('patients').doc(`${patientid}`)
-.collection('schedule').doc(`${apptdate}`); //patient id and scheudle are hardcoded because i suck
-
-function write_to_firestore(temp_data) {
-  let settemp = docRef.set ({
-    temperature: `${temp_data}`
-  }, {merge: true});
-}
-
-//extra variables for port reading
-out_array = [];
-total_text = ''
-// reading from port 
-//pls ignore all the console.logs - they're here for debugging
-port.on('readable', function () {
-  sleep(400) //optimize this - prevents reading buffer prematurely (very jank though)
-  out_array.push((port.read().toString()));
-  //console.log(out_array)
-  total_text = out_array.join('')
-  //console.log(total_text)
-  total_text  = total_text.replace(/Selected1\n/, '')
-  //console.log(total_text)
-  //console.log(T_from_ADC(bin_to_dec(total_text)))
-
-  potato = 0 //potato is converted to an str and then written to firebase
-  potato = T_from_ADC(bin_to_dec(total_text))
-  //console.log(potato.toString())
-  write_to_firestore(potato.toString())
-})
-
-// dunno what this is but it seems important for the port
-function onErr(err) {
-    console.log(err);
-    return 1;
-}
-
-// Exits program after some amout of milliseconds
-setTimeout((function() {
-  return process.exit(22);
-}), 5000);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//ignore this - legacy code
 /*
 //Requesting inputs from user - TODO is here
 prompt.start();

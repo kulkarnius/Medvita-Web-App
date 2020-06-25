@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "medtech-277402",
+  "private_key_id": "97dbdfb9dad6328da1c205b33ae455493d5e94f7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCLb5H8/q/2H2L9\n5QV9rEnDIwOWmnpeu3Nwiz6AmP/GNP60+hrrA48WMCaBdhHb3cLOpZfm3VT8iuwM\nFdCxZ8TNclK0r/yCXZY+bd9Uto71Ofg/uzNKcYbaa8O3h3uIJbqQejRk4XDU9+Nk\nPHXe11d57isQRYGnkgcaXGh37GLSnHImCqyp1wP8wLtAFZsmo6S0q1BBG05NZ7L9\nyPK0U+ayqVxiCdv+459+gLeLKERnbUYDdSibdnzuqhGmKJDlLRll57xDP4ZV7cFP\nHKZjHGzEIAKvffj8DSvyo9fOgYqb6/ZIT7NbHQNJGRDfJcfbAdRF8hrZfBAwjPXk\ndDTE5kpdAgMBAAECggEACT/r+8/7ZUTcwMH+FMGmnQLIHKf/wSQHOuqJyWcc5I2k\nbeX/fiKczdiA3WqzMZYq86Fpi7+YAS7IDN8vmm0rUYOpd+IKyq0hp9+LBqgboKnp\nTXUCKIiSbQ/kCls69yOllir9KcoIvZ/6Hi6ilRdM7sI9ahVqTe7yeK2zomz0e0sb\nd4E8C6C3zoEC82beGdV0gDA6P5RU86F3xvI4IKEYyvdyuXbkIrF13jhEqynsro+f\nhnoUbB/oG0BznAUyg60TrHSV2kpN63mWl2GqT+pENanVZbY7rFDD2iF7tMAk9kq1\nt/mXl1SHcCXM1X4ekeDC5UYW08X1wlIttop4bJwY0wKBgQDAAoZGTiOReXpvWeVd\nZU1ezSfLEdxepKoo8PjMUZ8n1uc+GLk2ZmD7rwFDkKEyLncUcaUa8fXlbqTZMvlR\nDrb0y+2cY+KTdZNGmhujDsSobsUJp3h8wq2O1XfycWrwLgAt+F9fM5TO4bkAuluX\nJkQojjfY91DfWkV4K9UNAEkGkwKBgQC556Y52YV97F1SrQ1Dg5fo1D6/OfzOoI9o\no2F468aXlCuKI2qFSuyoXQxIHR3iHWLFezlu1rxRAZAMdwX/sMyutoVPInPfMUoi\njxE5aPoprXktSeA/ZMZi+MLbExRS2++6I8HV6SqXlY5Y6FkCvzPsjB/iyxGxIS8U\n3VNI6kyRTwKBgQCjkIL52Q6LmkQmHxo4WVdzbqh7YJetN/CMN9p5kv5VXchXKZB9\nOvFa9VXKTKZErThbfgP71Cp4a6yaKcYgurw4BJBBLQWSQBJZjmYEnUwBf3ryImuN\nO/nFNyuap+tE9qrIflAgNTyKj9adPCNRuxNMyPniJawK2Edde1leXePXaQKBgBpb\nqcnR+YddF+488wB7i/JLBYp/YkS5pxui7pMCeunK7FFtrBCyCtPkPXWMC0yf9f0h\n94ark4+4tP/PcF5MZvjukAAkVmFyz5wOxNZq9+0o12GAc/cJBsfJlXcSQXNuE5NE\ntprpsExFvCUG7HfjPC1xwKObPyrqFY7Twpc4ARspAoGAL2Tuni6ZrO1ATH1VkrJq\n3NH917xiKCHmf/74dDNLt4X0YwkQYhputpUhUEKaW0g0FJBpgG2GCKQBn7D5iXqr\nSBX9c2BfTwPCNd2jSKuJAXdcfc7h4E7QxIKYusA969YgiNwS8cfqowItxtkGm1N8\ne7zdcLRY0K8nvWE6iZl1tPc=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firestore-front-end-access@medtech-277402.iam.gserviceaccount.com",
+  "client_id": "101132427350909780636",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firestore-front-end-access%40medtech-277402.iam.gserviceaccount.com"
+}

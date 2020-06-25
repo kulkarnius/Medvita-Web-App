@@ -2,7 +2,7 @@
 function login()
 {  
   const db = firebase.firestore();
-  const auth = direbase.auth();
+  const auth = firebase.auth();
 
   // Gets user info
   var email = document.getElementById('username').value;
@@ -10,26 +10,26 @@ function login()
   console.log(email);
   console.log(password);
 
-  // Signs in the doctor
+  // Signs in the patient
   auth.signInWithEmailAndPassword(email, password)
-  .then(function(user) {
-    // // Ensures that email is for doctor and not patient
-    console.log(user.uid);
-    db.collection('patients').doc(`${user.uid}`)
+  .then(function(result) {
+    // Ensures that email is for doctor and not patient
+    console.log(result.user.uid);
+    db.collection('patients').doc(`${result.user.uid}`)
     .get()
     .then(function(doc) {
       // Redirects to homescreen
       console.log('Logged in ', doc.data().fname, ' ', doc.data().lname);
-      //window.location = "homescreen.html";
+      window.location = "homescreen.html";
     })
     .catch(function(error) {
       console.log('User is not a patient');
       auth.signOut();
-      alert('Account does not exits');
+      alert('Incorrect username or password');
     }); 
   }).catch(function(error) {
     // Error handling
     console.log('Cannot sign in through Firebase Auth');
-    alert('Account does not exist');
+    alert('Incorrect username or password');
   });
 }

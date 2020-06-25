@@ -1,3 +1,38 @@
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+var doctorUid = '';
+var patientUid = localStorage.getItem('patientId');
+var dateConcat = localStorage.getItem('dateConcat');
+
+auth.onAuthStateChanged(function(user) {
+  doctorUid = user.uid;
+});
+
+console.log('Doctor Uid: ', doctorUid);
+console.log('Patient Uid: ', patientUid);
+console.log('Date Concatenation: ', dateConcat);
+
+const docSchedRef = db.collection('doctors').doc(`${doctorUid}`)
+  .collection('schedule').doc(`${dateConcat}`);
+const patientSchedRef = db.collection('patients').doc(`${patientUid}`)
+  .collection('schedule').doc(`${dateConcat}`);
+
+// Listens and displays patient's data
+var TempList = document.querySelector('.TempShow');
+var TempList2 = document.querySelector('.TempShow2');
+
+function displayTemp(doc){
+  $('.TempShow').html('').append(doc.data().temperature);
+  $('.TempShow2').html('').append(doc.data().tempData);
+}
+
+docSchedRef.onSnapshot(function(doc) {       
+  console.log("Current data: ", doc.data());
+  displayTemp(doc);
+});
+
+// Video services
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
 
 const configuration = {

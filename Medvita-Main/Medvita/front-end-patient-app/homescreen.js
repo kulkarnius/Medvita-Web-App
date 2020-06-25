@@ -136,6 +136,7 @@ function displayApp(doc){
 
 // Displays the 5 newest doctor's appointments for the patients
 function getSchedule() {
+  console.log('Retrieving schedule');
   $('.AppShow').html("");
   count = 0;
 
@@ -143,10 +144,13 @@ function getSchedule() {
   auth.onAuthStateChanged(function(user){
     if(user) {
       patientUid = user.uid;
+      console.log('Patient uid: ', patientUid);
       // Get the schedule for the current user
       db.collection('patients').doc(`${patientUid}`).collection('schedule')
       .orderBy('dateConcat').limit(5).get()
       .then(function(querySnapshot) {
+        console.log('Displaying each meeting');
+        console.log(querySnapshot);
         querySnapshot.forEach(function(doc) {
           console.log(doc.data());
           displayApp(doc);

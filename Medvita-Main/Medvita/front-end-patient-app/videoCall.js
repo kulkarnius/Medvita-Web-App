@@ -120,8 +120,17 @@ function joinRoom() {
 }
 
 function attemptJoinRoom() {
-  const roomId = localStorage.getItem('webrtckey');
-  joinRoomById(roomId);
+  firebase.auth().onAuthStateChanged(function(user) {
+    const patientUid = user.uid;
+    console.log('Patient Uid: ', patientUid);
+    const db = firebase.firestore();
+    db.collection('patients').doc(`${patientUid}`)
+    .get()
+    .then(function(doc) {
+      console.log("WebRTC key: ", doc.data().webrtckey);
+      joinRoomById(doc.data().webrtckey);
+    });
+  });
 }
 
 async function joinRoomById(roomId) {

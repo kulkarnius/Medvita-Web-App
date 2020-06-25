@@ -4,7 +4,7 @@ const auth = firebase.auth();
 
 // Stores UID of the patients listed in schedule
 var scheduleUid = new Array(5);
-var doctor = '';
+var patient = '';
 var patientUid = '';
 
 // Add an appointment
@@ -12,7 +12,7 @@ function addApp(){
   // Get data from page
   var FName = document.getElementById('FName').value;
   var LName = document.getElementById('LName').value;
-  var patient = FName + ' ' + LName;
+  var doctor = FName + ' ' + LName;
   var Month = document.getElementById('Month').value;
   var Day = document.getElementById('Day').value;
   var Year = document.getElementById('Year').value;
@@ -21,19 +21,19 @@ function addApp(){
   var DateConcat = Year + Month + Day + Time.replace(':','');
 
   // Checks that the user is valid and grabs their UID
-  var patientUid = '';
-  var patientsRef = db.collection("patients");
-  patientsRef.where("email", "==", Email)
+  var doctorUid = '';
+  var doctorRef = db.collection("doctors");
+  doctorRef.where("email", "==", Email)
   .get()
   .then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
       // Checks that first name and last name match
       let data = doc.data();
       if (data.fname == FName && data.lname == LName) {
-        patientUid = data.uid;
-        console.log(patientUid);
+        doctorUid = data.uid;
+        console.log(doctorUid);
       } else {
-        alert ('No patient found');
+        alert ('No matching doctor found');
         console.log('Names do not match');
       }
       console.log(doc.id, " => ", data);
@@ -41,20 +41,18 @@ function addApp(){
 
     // Sends data to database
     auth.onAuthStateChanged(function(user){
-      if(user && patientUid != '') {
+      console.log('user: ', user, ' doctor id: ', doctorUid);
+      if(user && doctorUid != '') {
         // Put meeting in doctor database
-        const doctorUid = user.uid;
-        let docRef = db.collection('doctors').doc(`${doctorUid}`);
-        let setDoctor = docRef.get()
+        const patientUid = user.uid;
+        let patientRef = db.collection('patients').doc(`${patientUid}`);
+        let getPatient = patientRef.get()
         .then(function(doc) {
-          doctor = doc.data().fname + ' ' + doc.data().lname;
+          patient = doc.data().fname + ' ' + doc.data().lname;
           console.log(doc.id, '=>', doc.data());
-          console.log(doctor);
-        })
-        .then(function() {
 
         
-        console.log('Doctor: ', doctor);
+        console.log('Patient name: ', patient);
 
         let data = {
           patient: patient,
@@ -63,15 +61,17 @@ function addApp(){
           day: Day,
           year: Year,
           time: Time,
-          email: Email,
+          //email: Email,
           dateConcat: DateConcat,
           patientuid: patientUid,
-          doctoruid: doctorUid
+          doctoruid: doctorUid,
+          temperature: 29,
+          tempdata: 98
         };
         console.log(data);
 
-        let docSchedRef = docRef.collection('schedule').doc(`${DateConcat}`);
-  
+        let docSchedRef = db.collection('doctors').doc(`${doctorUid}`)
+        .collection('schedule').doc(`${DateConcat}`);
         const setDocSched = docSchedRef.set(data)
         .then(function() {
           console.log("Document written with ID: ", DateConcat);
@@ -97,7 +97,7 @@ function addApp(){
     })
   })
   .catch(function(error) {
-    alert('No patient found');
+    alert('No matching doctor found');
     console.log("Error getting documents: ", error);
   });
 }
@@ -169,7 +169,7 @@ getSchedule();
 
 auth.onAuthStateChanged(function(user){
   if(user) {
-    db.collection('patients').doc(`${patientUid}`)
+    db.collection('patients').doc(`${user.uid}`).collection('schedule')
     .onSnapshot(function(querySnapshot) {
       getSchedule();
     });

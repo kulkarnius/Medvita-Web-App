@@ -19,7 +19,7 @@ var dateConcat = localStorage.getItem('dateConcat');
 
     function displayTemp(doc) {
       $('.TempShow').html('').append(doc.data().temperature);
-      $('.TempShow2').html('').append(doc.data().tempData);
+      $('.TempShow2').html('').append(doc.data().tempdata);
     }
 
     db.collection('doctors').doc(`${doctorUid}`)
@@ -256,7 +256,7 @@ async function hangUp(e) {
   document.querySelector('#currentRoom').innerText = '';
 
   // Remove key WebRTC key from patient database
-  const clearKey = db.collection('patients').doc(`${patientId}`).update({
+  const clearKey = db.collection('patients').doc(`${patientUid}`).update({
     webrtckey: ''
   });
 

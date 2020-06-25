@@ -33,6 +33,7 @@ function addApp(){
 
   // Checks that the user is valid and grabs their UID
   var patientUid = '';
+  var namesMatch = true;
   var patientsRef = db.collection("patients");
   patientsRef.where("email", "==", Email)
   .get()
@@ -44,11 +45,15 @@ function addApp(){
         patientUid = data.uid;
         console.log(patientUid);
       } else {
+        namesMatch = false;
         alert ('No patient found');
         console.log('Names do not match');
       }
       console.log(doc.id, " => ", data);
     });
+
+    if (namesMatch == false)
+      return;
 
     // Sends data to database
     auth.onAuthStateChanged(function(user){
@@ -57,13 +62,11 @@ function addApp(){
         const doctorUid = user.uid;
         let docRef = db.collection('doctors').doc(`${doctorUid}`);
         let setDoctor = docRef.get()
-        .then(function(doc) {
-          doctor = doc.data().fname + ' ' + doc.data().lname;
-          console.log(doc.id, '=>', doc.data());
+        .then(function(docData) {
+          console.log('Doc data: ', docData);
+          doctor = docData.data().fname + ' ' + docData.data().lname;
+          console.log(docData.id, '=>', docData.data());
           console.log(doctor);
-        })
-        .then(function() {
-
         
         console.log('Doctor: ', doctor);
 
@@ -74,10 +77,12 @@ function addApp(){
           day: Day,
           year: Year,
           time: Time,
-          email: Email,
+          //email: Email,
           dateConcat: DateConcat,
           patientuid: patientUid,
-          doctoruid: doctorUid
+          doctoruid: doctorUid,
+          temperature: 29,
+          tempdata: 98
         };
         console.log(data);
 

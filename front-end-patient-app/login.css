@@ -21,3 +21,9 @@ text-align: center;
 .navBar{
     color: white;
 }
+
+.cancelbtn{
+    color: white;
+    background-color: #f44336;
+    float: right;
+}

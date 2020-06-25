@@ -22,7 +22,7 @@ function createWindow() {
     });
     childWindow = new BrowserWindow({
         parent: parentWindow, /*modal: true,*/ title: 'Login-Screen',
-        width: 400, maxWidth: 400, height: 525, maxHeight: 525, //frame: false,
+        //width: 400, maxWidth: 400, height: 525, maxHeight: 525, //frame: false,
         webPreferences: {
             //nodeIntegration: true, //not secure
             //enableRemoteModule: true, //not secure

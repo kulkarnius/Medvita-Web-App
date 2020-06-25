@@ -9,7 +9,7 @@ function login() {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(function (result) {
             // Redirects to Vitals page
-            window.location = "videoCall.html";
+            window.location = "homescreen.html";
         }).catch(function (error) {
             // Error handling
             alert('Something went wrong');

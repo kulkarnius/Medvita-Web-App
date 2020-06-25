@@ -212,6 +212,6 @@ p{
 margin-left: 1.25%;
 margin-right: 1.75%;
 }
-.card-header .btn[aria-expanded=true] {
+/*.card-header .btn[aria-expanded=true] {
    
-    }
+    } //this is an empty ruleset */

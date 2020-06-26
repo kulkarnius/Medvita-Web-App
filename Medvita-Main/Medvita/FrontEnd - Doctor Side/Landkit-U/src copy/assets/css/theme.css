@@ -1,4 +1,5 @@
 /**
+Hello!
  * Custom variables followed by theme variables followed by Bootstrap variables
  * to ensure cascade of styles.
  */
@@ -22,7 +23,7 @@
   --white: #FFFFFF;
   --gray: #869AB8;
   --gray-dark: #384C74;
-  --primary: #335EEA;
+  --primary: #3379ea;
   --secondary: #506690;
   --success: #42BA96;
   --info: #7C69EF;

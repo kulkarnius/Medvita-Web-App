@@ -77,7 +77,7 @@ function init() {
  * Saves the notes that the doctor takes and puts them in the cloud
  */
 function saveFormData() {
-  var notes = document.querySelector('#notes').textContent;
+  var notes = document.getElementById('notes').value;
   console.log("Doctor's notes: ", notes);
   
   // Puts notes in doctor's database

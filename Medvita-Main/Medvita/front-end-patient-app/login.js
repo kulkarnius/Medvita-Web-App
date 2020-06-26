@@ -31,11 +31,11 @@ function login()
     .catch(function(error) {
       console.log('User is not a patient');
       auth.signOut();
-      alert('Incorrect username or password');
+      window.ErrorBox();
     }); 
   }).catch(function(error) {
     // Error handling
     console.log('Cannot sign in through Firebase Auth');
-    alert('Incorrect username or password');
+    window.ErrorBox();
   });
 }

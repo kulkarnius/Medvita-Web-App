@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<<<<<<< HEAD
 
 <head>
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
@@ -194,6 +195,171 @@
 
                         </div>
                         <!-- <div class="form-group">
+=======
+<head>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+    <title>Welcome to Medvita</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="homescreen.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+    <script src="init.js"></script>
+    
+
+</head>
+<body>
+
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-dark "style ="background: linear-gradient(to left, #12c2e9, #c471ed, #f64f59); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */">
+        <a class="navbar-brand" href="#">Medvita-Patient</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+           
+            <li class="nav-item active">
+              <a class="nav-link" href="homescreen.html">Dashboard</a>
+            </li>
+           
+           
+            <li class="nav-item">
+              <a class="nav-link" href="videoCall.html">Console <span class="sr-only">(current)</span></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Patient Profiles</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search"> -->
+            <!-- <button class="btn btn-outline-primary my-2 my-sm-0" type="button">Logout</button> -->
+            <a class="btn btn-outline-light" href="login.html" role="button">Logout</a>
+          </form>
+        </div>
+      </nav>
+
+</div>
+
+
+
+
+
+    <div id="appointment">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+            <h1 class="Display">Create an Appointment</h1>
+
+            <form class="needs-validation" novalidate>
+            <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <label for="validationCustom01">First name</label>
+                <input type="text" class="form-control" id="FName" value="" required>
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="validationCustom02">Last name</label>
+                <input type="text" class="form-control" id="LName" value="" required>
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+            </div>
+    
+    
+    
+    <div id=birthday>
+            <h5>Please appointment time:</h1>
+                <div class="form-row">
+        
+                        
+                    <div class="col-md-3 mb-3">
+                        <label for="validationCustom04">Month</label>
+                        <select class="custom-select" id="Month" required>
+                          <option selected disabled value="">Choose...</option>
+                          <option>01</option>
+                          <option>02</option>
+                          <option>03</option>
+                          <option>04</option>
+                          <option>05</option>
+                          <option>06</option>
+                          <option>07</option>
+                          <option>08</option>
+                          <option>09</option>
+                          <option>10</option>
+                          <option>11</option>
+                          <option>12</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Please select a valid month.
+                        </div>
+                      </div>
+                      <div class="col-md-3 mb-3">
+                        <label for="validationCustom04">Day</label>
+                        <select class="custom-select" id="Day" required>
+                          <option selected disabled value="">Choose...</option>
+                          <option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option>
+                          <option>08</option><option>09</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option>
+                          <option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option>
+                          <option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option>28</option>
+                          <option>29</option><option>30</option><option>31</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Please select a valid day.
+                        </div>
+                      </div>
+                      <div class="col-md-3 mb-3">
+                        <label for="validationCustom04">Year</label>
+                        <select class="custom-select" id="Year" required>
+                          <option selected disabled value="">Choose...</option>
+                          <option>2020</option><option>2021</option><option>2022</option><option>2023</option><option>2024</option><option>2025</option>
+                          <option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Please select a valid year.
+                        </div>
+                      </div>
+                      <div class="col-md-3 mb-3">
+                        <div class="md-form md-outline">
+                            
+                            <label for="default-picker">Time</label>
+                            <input type="time" id="Time" class="form-control" placeholder="Select time">
+                            <div class="valid-feedback">
+                                You have created an Appointment!
+                              </div>
+                          </div>
+                      </div>
+        
+        
+                </div>
+            </div>
+    
+           
+       
+            <div class="form-row">
+    
+                <div class="col-md-12 mb-3">
+                    <label for="validationCustom03">Email Address</label>
+                    <input type="email" class="form-control" id="Email" required>
+                    <div class="invalid-feedback">
+                    Please provide a valid email address.
+                    </div>
+                </div>
+    
+    
+
+    
+        </div>
+            <!-- <div class="form-group">
+>>>>>>> master
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
                 <label class="form-check-label" for="invalidCheck">
@@ -205,6 +371,7 @@
               </div>
               
             </div> -->
+<<<<<<< HEAD
                         <button class="btn btn-primary" type="button" id="button" onclick="addApp()"><span
                                 class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Create
                             Appointment</button>
@@ -305,4 +472,130 @@
         crossorigin="anonymous"></script>
 </body>
 
+=======
+            <button class="btn btn-primary" type="button" id="button" onclick="addApp()"><span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>   Create Appointment</button>
+          </form>
+    
+       
+          <div class="alert alert-success alert-dismissible hidden fade" id="appAlert" role="alert">
+            <strong>Your appointment has been created</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            
+          </div>
+          
+
+
+
+    
+          <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (function() {
+              'use strict';
+              window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                  form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                  }, false);
+                });
+              }, false);
+            })();
+            </script>
+
+    <script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript">
+		$(document).ready(function() {
+			
+          $("#button").click(function() {
+				$('#appAlert').addClass('show');
+			});
+
+		});
+	</script>
+
+            
+    
+    
+    
+        
+            </div>  
+
+            <div class = "col-md-6">
+               <div id="nopadding">
+             
+                <div class="AppBox">
+                <h1 class = 'Patient'>Upcoming Appointments</h1>
+                
+                <div class = "content">
+                <div id="patientBox">
+                <h3 class='Patient'>Your upcoming appointment: </h3>
+                
+                
+
+                  
+
+                <div class='AppShow'></div>
+
+              </div>    
+
+                </div>  
+                
+                <!-- <div style="text-align: center;">
+                    <button onClick="window.location.reload();", class="button">Obtain Updated Temperature</button>
+                    
+                </div> -->
+                
+                
+                </div>
+                
+                </div>  
+                
+              </div> 
+              
+  
+  
+  
+  
+  
+  
+          </div>
+
+        </div>  
+
+        
+    
+    </div>
+
+</div>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="homescreen.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+>>>>>>> master
 </html>

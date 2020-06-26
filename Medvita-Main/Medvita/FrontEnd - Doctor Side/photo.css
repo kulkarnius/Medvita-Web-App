@@ -1,0 +1,211 @@
+body {
+    background: #ECEFF1;
+    color: rgba(0, 0, 0, 0.87);
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    margin-top: 0;
+    padding: 0;
+}
+
+#message {
+    background: white;
+    max-width: 360px;
+    margin: 100px auto 16px;
+    padding: 32px 24px;
+    border-radius: 3px;
+}
+#cameraBtn{
+    background: linear-gradient(to left, #12c2e9, #c471ed, #f64f59); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */}
+#mainMessage{
+font-size: 3em;
+padding-bottom: 2%;
+text-align: center;
+font-family: 'Source Sans Pro', sans-serif;
+}
+#buttons{
+    text-align: center;
+}
+
+#message h2 {
+    color: #ffa100;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0 0 8px;
+}
+
+#message h1 {
+    font-size: 22px;
+    font-weight: 300;
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0 0 16px;
+}
+
+#message p {
+    line-height: 140%;
+    margin: 16px 0 24px;
+    font-size: 14px;
+}
+
+#message a {
+    display: block;
+    text-align: center;
+    background: #bdcfd8;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+    padding: 16px;
+    border-radius: 4px;
+}
+
+#message, #message a {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+#load {
+    color: rgba(124, 16, 16, 0.4);
+    text-align: center;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    body, #message {
+        margin-top: 0;
+        background: white;
+        box-shadow: none;
+    }
+
+   
+}
+
+
+
+button {
+    margin: 0.2em 0.1em;
+}
+
+div#videos {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+div#videos > video {
+    margin-top: 20%;
+    background: black;
+    border-radius: 20px;
+    margin-top: 5%;
+    width: 46.17%;
+    height: 100%;
+    display: block;
+    margin: 1em;
+}
+
+#vid{
+
+    margin-top: 2%;
+}
+body{
+
+    background: linear-gradient(to left, #12c2e9, #c471ed, #f64f59); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    background-size: cover;
+    background-position: center;
+    color:white;
+}
+html{
+    height: 100%;
+}
+#main{
+    padding:7%;
+    color: white;
+}
+h1{
+padding-bottom: 5%;
+text-align: center;
+}
+.nav-link{
+    color: white;
+}
+.navBar{
+    color: white;
+}
+#test{
+
+    border: 2px solid black;
+}
+
+#appAlert{
+
+    margin-top: 7%;
+}
+#localVideo{
+    margin-left: 10%;
+}
+.TempShow{
+    font-size: 55px;
+    text-align: center;
+    
+}
+.h4{
+
+text-align: center;
+
+}
+#TempB{
+    border-radius: 25px;
+    color: rgb(190, 220, 255);
+}
+.TempShow2{
+    font-size: 55px;
+    text-align: center;
+    
+}
+.card{
+    color: white;
+    background: none;
+    border: none;
+
+}
+#header{
+
+    text-align: center;
+}
+p{
+    margin-top: 2%;
+    text-align: center;
+    color: white;
+}
+#videos{
+
+
+    margin-top: 5%;
+}
+#vid{
+
+    margin-bottom: 5%;
+}
+#notes{
+
+margin-left: 1.25%;
+margin-right: 1.75%;
+}
+.card-header .btn[aria-expanded=true] {
+   
+    }
+    .Patient1{
+        font-size: 120px;
+        padding-bottom: 2%;
+    }
+    .Patient{
+        font-size: 80px;
+        padding-bottom: 0;
+    }
+    .TempBox{
+
+        margin-top: 17%;
+    }
+    .TempShow{
+
+        font-size:120px
+    }
+    .btn{
+
+        font-size: 30px;
+    }

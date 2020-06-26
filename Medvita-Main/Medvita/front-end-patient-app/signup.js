@@ -33,7 +33,7 @@ function signup() {
     if (password != vpassword) {
         document.getElementById('password').value = "";
         document.getElementById('vpassword').value = "";
-        alert("Passwords don't match");
+        window.PassNoMatchError();
         return;
     }
 
@@ -73,13 +73,13 @@ function signup() {
                     window.location = "homescreen.html";
                 }).catch(function (error) {
                     // Couldn't put data in database
-                    alert('Could not put data in database');
+                    window.DatabaseError();
                     console.log('Error: ', error);
                 });
 
         }).catch(function (error) {
             // Error handling
             console.log('Error: ', error);
-            alert('Could not create an account');
+            window.AccountCreationError();
         });
 }

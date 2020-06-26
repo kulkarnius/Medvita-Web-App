@@ -39,14 +39,26 @@ function createWindow() {
     })
 }
 
-ipc.on('close-me', function() {
+ipc.on('close-me', function () {
     if (process.platform !== 'darwin') {
         app.quit()
     }
 })
 
-ipc.on('open-error-dialog', function(){
+ipc.on('userpass-error-dialog', function () {
     dialog.showErrorBox('Invalid Login', "Incorrect Username/Password")
+})
+
+ipc.on('passnomatch-error-dialog', function () {
+    dialog.showErrorBox('Error', "Passwords don't match")
+})
+
+ipc.on('database-error-dialog', function () {
+    dialog.showErrorBox('Error', "Data could not be stored in database")
+})
+
+ipc.on('account-not-created-dialog', function () {
+    dialog.showErrorBox('Error', "Account could not be created")
 })
 
 app.on('ready', createWindow);

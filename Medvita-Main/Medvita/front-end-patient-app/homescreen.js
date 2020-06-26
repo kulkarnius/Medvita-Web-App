@@ -60,23 +60,7 @@ function addApp() {
                             console.log(doc.id, '=>', doc.data());
 
 
-        let data = {
-          patient: patient,
-          doctor: doctor,
-          month: Month,
-          day: Day,
-          year: Year,
-          time: Time,
-          //email: Email,
-          dateConcat: DateConcat,
-          patientuid: patientUid,
-          doctoruid: doctorUid,
-          notes: '',
-          webrtckey: '',
-          temperature: 29,
-          tempdata: 98
-        };
-        console.log(data);
+                            console.log('Patient name: ', patient);
 
                             let data = {
                                 patient: patient,

@@ -7,3 +7,12 @@ width: 45%;
 #tempData{
     border-radius: 15%;
 }
+.text-primary{
+
+    color: teal;
+}
+@media (min-width: 768px), .py-md-13 {
+
+padding-bottom: 0;
+
+}

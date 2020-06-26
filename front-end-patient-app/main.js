@@ -11,18 +11,11 @@ const url = require("url");
 const ipc = electron.ipcMain;
 const dialog = electron.dialog;
 
-let parentWindow, childWindow;
+let win;
 
 function createWindow() {
-    parentWindow = new BrowserWindow({
-        title: 'MedTech', /*show: false,*/
-        webPreferences: {
-            //nodeIntegration: true, //not secure
-            //enableRemoteModule: true //not secure
-        }
-    });
-    childWindow = new BrowserWindow({
-        parent: parentWindow, /*modal: true,*/ title: 'Login-Screen',
+    win = new BrowserWindow({
+        /*modal: true,*/ title: 'Login-Screen',
         //width: 400, maxWidth: 400, height: 525, maxHeight: 525, //frame: false,
         webPreferences: {
             //nodeIntegration: true, //not secure
@@ -31,22 +24,17 @@ function createWindow() {
             preload: path.join(app.getAppPath(), 'preload.js')
         }
     });
-    /*childWindow.once('ready-to-show', () => {
-        childWindow.show()
-    });*/
-    parentWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'homescreen.html'),
+    win.once('ready-to-show', () => {
+        win.show()
+    });
+
+    win.loadURL(url.format({
+        pathname: path.join(__dirname, 'serial.html'),
         protocol: 'file',
         slashes: true
     }));
 
-    childWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'login.html'),
-        protocol: 'file',
-        slashes: true
-    }));
-
-    parentWindow.on('closed', () => {
+    win.on('closed', () => {
         win = null;
     })
 }

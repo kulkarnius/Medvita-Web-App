@@ -11,8 +11,3 @@ width: 45%;
 
     color: teal;
 }
-@media (min-width: 768px), .py-md-13 {
-
-padding-bottom: 0;
-
-}

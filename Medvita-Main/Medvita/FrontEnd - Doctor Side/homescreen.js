@@ -71,6 +71,7 @@ function addApp(){
         dateConcat: DateConcat,
         patientuid: patientUid,
         doctoruid: docUid,
+        notes: '',
         webrtckey: '',
         temperature: 29,
         tempdata: 98

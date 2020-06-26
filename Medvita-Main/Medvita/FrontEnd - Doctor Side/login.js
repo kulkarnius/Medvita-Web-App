@@ -1,4 +1,8 @@
-// Logs in the Doctor
+/**
+ * Attempts to log in the user using Firebase auth,
+ * then checks in the database to be sure that the user
+ * is a doctor
+ */
 function login()
 {  
   const db = firebase.firestore();

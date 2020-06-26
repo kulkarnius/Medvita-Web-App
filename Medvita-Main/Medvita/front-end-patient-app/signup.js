@@ -1,5 +1,11 @@
-// Creates a Google Auth ID and stores data into corresponding doctor's database
-
+/**
+ * Signs up the user
+ * Checks that the user properly filled out all of the entries,
+ * then creates an auth account and adds the user info to the database
+ * TODO: 1) Check that the email is valid
+ *       2) Verify complexity of the password
+ *       3) Be sure that the TOS checkbox is clicked
+ */
 function signup()
 {  
   // Gets user info
@@ -56,8 +62,7 @@ function signup()
       address: Address,
       city: City,
       province: Province,
-      postalcode: Postalcode,
-      webrtckey: ''
+      postalcode: Postalcode
     };
 
     const db = firebase.firestore();

@@ -274,3 +274,20 @@ function registerPeerConnectionListeners() {
 }
 
 init();
+
+// Code to input sensor data and place into database
+function updateSensor() {
+  var temperature = 9;
+  var tempdata = 19;
+  
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      const db = firebase.firestore();
+      db.collection('patients').doc(`${user.uid}`)
+      .update({
+        temperature: temperature,
+        tempdata: tempdata
+      });
+    }
+  });
+}

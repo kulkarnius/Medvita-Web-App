@@ -1,35 +1,44 @@
+// Initialize GCP instances
 const db = firebase.firestore();
 const auth = firebase.auth();
 
+/**
+ * Gathers the data to access correct patient and doctor database,
+ * create a listener that detects and updates sensor measurements
+ */
 var doctorUid = '';
-var patientUid = localStorage.getItem('patientId');
+var patientUid = localStorage.getItem('patientUid');
 var dateConcat = localStorage.getItem('dateConcat');
+auth.onAuthStateChanged(function(user) {
+  // Log meeting data
+  doctorUid = user.uid;
+  console.log('Doctor Uid: ', doctorUid);
+  console.log('Patient Uid: ', patientUid);
+  console.log('Date Concatenation: ', dateConcat);
 
-(function(){
-  auth.onAuthStateChanged(function(user) {
-    doctorUid = user.uid;
-    
-    console.log('Doctor Uid: ', doctorUid);
-    console.log('Patient Uid: ', patientUid);
-    console.log('Date Concatenation: ', dateConcat);
+  // Listens and displays patient's data
+  var TempList = document.querySelector('.TempShow');
+  var TempList2 = document.querySelector('.TempShow2');
+  function displayTemp(doc) {
+    $('.TempShow').html('').append(doc.data().temperature);
+    $('.TempShow2').html('').append(doc.data().tempdata);
+  }
 
-    // Listens and displays patient's data
-    var TempList = document.querySelector('.TempShow');
-    var TempList2 = document.querySelector('.TempShow2');
+  // Adds listener to patient database
+  db.collection('patients').doc(`${patientUid}`)
+  .collection('schedule').doc(`${dateConcat}`)
+  .onSnapshot(function(doc) {       
 
-    function displayTemp(doc) {
-      $('.TempShow').html('').append(doc.data().temperature);
-      $('.TempShow2').html('').append(doc.data().tempdata);
-    }
+    // Displays sensor data
+    console.log("Patient schedule data: ", doc.data());
+    displayTemp(doc);
 
+    // Copies sensot data to doctor's database
     db.collection('doctors').doc(`${doctorUid}`)
     .collection('schedule').doc(`${dateConcat}`)
-    .onSnapshot(function(doc) {       
-      console.log("Current data: ", doc.data());
-      displayTemp(doc);
-    });
+    .set(doc.data());
   });
-})();
+});
 
 // Video services
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
@@ -53,6 +62,9 @@ let roomDialog = null;
 let roomId = null;
 let patientId = null;
 
+/**
+ * Initializes all of the event listeners
+ */
 function init() {
   document.querySelector('#cameraBtn').addEventListener('click', openUserMedia);
   document.querySelector('#hangupBtn').addEventListener('click', hangUp);
@@ -61,6 +73,10 @@ function init() {
   roomDialog = new mdc.dialog.MDCDialog(document.querySelector('#room-dialog'));
 }
 
+/**
+ * Create a room and put the WebRTC key into the patient's 
+ * and the doctor's database
+ */
 async function createRoom() {
   document.querySelector('#createBtn').disabled = true;
   document.querySelector('#joinBtn').disabled = true;
@@ -103,7 +119,17 @@ async function createRoom() {
   roomId = roomRef.id;
   console.log(`New room created with SDP offer. Room ID: ${roomRef.id}`);
 
-  const updKey = db.collection('patients').doc(`${patientUid}`).update({
+  // Update WebRTC key for patient
+  db.collection('patients').doc(`${patientUid}`)
+  .collection('schedule').doc(`${dateConcat}`)
+  .update({
+    webrtckey: roomId
+  });
+
+  // Update WebRTC key for doctor
+  db.collection('doctors').doc(`${doctorUid}`)
+  .collection('schedule').doc(`${dateConcat}`)
+  .update({
     webrtckey: roomId
   });
 
@@ -139,6 +165,7 @@ async function createRoom() {
   // Listen for remote ICE candidates above
 }
 
+// Is not needed on doctor's side, eventually will be deleted (deleting now will cause errors)
 function joinRoom() {
   document.querySelector('#createBtn').disabled = true;
   document.querySelector('#joinBtn').disabled = true;
@@ -154,6 +181,7 @@ function joinRoom() {
   roomDialog.open();
 }
 
+// Is not needed on doctor's side, eventually will be deleted (deleting now will cause errors)
 async function joinRoomById(roomId) {
   const roomRef = db.collection('rooms').doc(`${roomId}`);
   const roomSnapshot = await roomRef.get();
@@ -218,6 +246,9 @@ async function joinRoomById(roomId) {
   }
 }
 
+/**
+ * Turns on the doctor's webcam and microphone
+ */
 async function openUserMedia(e) {
   const stream = await navigator.mediaDevices.getUserMedia(
       {video: true, audio: true});
@@ -233,6 +264,9 @@ async function openUserMedia(e) {
   document.querySelector('#hangupBtn').disabled = false;
 }
 
+/**
+ * Hangs up the call and clears WebRTC key 
+ */
 async function hangUp(e) {
   const tracks = document.querySelector('#localVideo').srcObject.getTracks();
   tracks.forEach(track => {
@@ -256,7 +290,16 @@ async function hangUp(e) {
   document.querySelector('#currentRoom').innerText = '';
 
   // Remove key WebRTC key from patient database
-  const clearKey = db.collection('patients').doc(`${patientUid}`).update({
+  db.collection('patients').doc(`${patientUid}`)
+  .collection('schedule').doc(`${dateConcat}`)
+  .update({
+    webrtckey: ''
+  });
+
+  // Remove key WebRTC key from doctor database
+  db.collection('doctors').doc(`${doctorUid}`)
+  .collection('schedule').doc(`${dateConcat}`)
+  .update({
     webrtckey: ''
   });
 
@@ -277,6 +320,9 @@ async function hangUp(e) {
   document.location.reload(true);
 }
 
+/**
+ * Registers the peer conection
+ */
 function registerPeerConnectionListeners() {
   peerConnection.addEventListener('icegatheringstatechange', () => {
     console.log(

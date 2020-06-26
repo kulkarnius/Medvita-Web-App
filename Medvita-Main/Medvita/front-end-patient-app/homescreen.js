@@ -2,12 +2,20 @@
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-// Stores UID of the patients listed in schedule
-var scheduleUid = new Array(5);
+// Stores basic user info
+var doctorUidArray = new Array(5);
+var dateArray = new Array(5);
 var patient = '';
 var patientUid = '';
+var count = 0;
 
-// Add an appointment
+/**
+ * Add an apointment
+ * User clicks button, verifies that the doctor exists,
+ * then adds that appointment in both the patient's and
+ * the doctor's schedule.
+ * TODO: Add an email confirmation of the appointment
+ */
 function addApp(){
   // Get data from page
   var FName = document.getElementById('FName').value;
@@ -102,28 +110,43 @@ function addApp(){
   });
 }
 
-function attemptJoinMeeting() {
-  console.log('Joining meeting...');
-  // Check for WebRTCkey
+/**
+ * Join the meeting
+ * When the user clicks on one of the buttons
+ * in the schedule, they will attempt to join
+ * a video meeting with the doctor. If the doctor
+ * has not initiated a meeting, then they will
+ * be placed in a waiting room until the doctor
+ * starts the meeting.
+ */
+function attemptJoinMeeting(num) {
+  console.log('Joining meeting on ', dateArray[num]);
   db.collection('patients').doc(`${patientUid}`)
+  .collection('schedule').doc(`${dateArray[num]}`)  // Patient's meeting data
   .get()
   .then(function(doc) {
-    console.log("Patient's user data: ", doc.data());
+    console.log("Patient's user data: ", doc.data());    // Save meeting date and doc uid
+    localStorage.setItem("dateConcat", dateArray[num]);
+    localStorage.setItem("doctorUid", doc.data().doctorUid);  
     if (doc.data().webrtckey != '') {
-      // Doctor has created session
-      localStorage.setItem("webrtckey", doc.data().webrtckey);
-      window.location = "videoCall.html";
+      console.log('WebRTC key found');          // Key has been found
+      //window.location = "videoCall.html";
     } else {
-      // Key does not exist
-      window.location = "waitingRoom.html";
+      console.log('Going to waiting-room');     // Key has not been updated
+      //window.location = "waitingRoom.html";
     }
   });
 }
 
+/**
+ * Displays each appointment on the screen
+ * Takes in a document in the 'schedule' collection
+ * of the patient and outputs its data to the screen.
+ */
 function displayApp(doc){
   $('.AppShow').append(doc.data().doctor).
   append("&nbsp;").
-  append("<button class='btn btn-outline-light' onClick='attemptJoinMeeting()'>Begin Appointment</button>").
+  append("<button class='btn btn-outline-light' onClick='attemptJoinMeeting(" + count + ")'>Begin Appointment</button>").
   append('&nbsp;').
   append(doc.data().month).
   append("/").
@@ -134,7 +157,9 @@ function displayApp(doc){
   append("<br>");
 }
 
-// Displays the 5 newest doctor's appointments for the patients
+/**
+ * Get's an up-to-date schedule from the database
+ */
 function getSchedule() {
   console.log('Retrieving schedule');
   $('.AppShow').html("");
@@ -151,9 +176,14 @@ function getSchedule() {
       .then(function(querySnapshot) {
         console.log('Displaying each meeting');
         console.log(querySnapshot);
+
+        // Goes through the closest meetings
         querySnapshot.forEach(function(doc) {
-          console.log(doc.data());
+          console.log("Schedule data for meeting ", count, " : ", doc.data());
           displayApp(doc);
+          doctorUidArray[count] = doc.data().doctoruid;
+          dateArray[count] = doc.data().dateConcat;
+          count++;
         });
       })
       .catch(function(error){
@@ -165,8 +195,11 @@ function getSchedule() {
   });
 }
 
+/**
+  * Loads the schedule to the screen, and sets a listener
+  * that allows for real-time of the schedule
+  */
 getSchedule();
-
 auth.onAuthStateChanged(function(user){
   if(user) {
     db.collection('patients').doc(`${user.uid}`).collection('schedule')

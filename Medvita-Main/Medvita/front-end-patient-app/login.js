@@ -1,4 +1,10 @@
-// Logs in the patient
+/**
+ * Logs in the user
+ * Checks that the user logs into the auth account, and
+ * then makes sure that the account is registered as
+ * a patient.
+ * TODO: Add forgot password page
+ */
 function login()
 {  
   const db = firebase.firestore();

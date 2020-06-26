@@ -8,13 +8,13 @@ const auth = firebase.auth();
 auth.onAuthStateChanged(function(user) {
   if (user) {
     const dateConcat = localStorage.getItem('dateConcat');
-    console.log('Patient Uid: ', user.id);
+    console.log('Patient Uid: ', user.uid);
     console.log('Date concatenation: ', dateConcat);
-    db.collection('patients').doc(`${user.id}`)
+    db.collection('patients').doc(`${user.uid}`)
     .collection('schedule').doc(`${dateConcat}`)
-    .onSnapshot(function(querySnapshot) {
-      console.log(querySnapshot.data().webrtckey)
-      if (querySnapshot.data().webrtckey != '') {
+    .onSnapshot(function(doc) {
+      console.log('Data: ', doc.data())
+      if (doc.data().webrtckey != '') {
         console.log('Sending patient to video call');
         window.location = 'videoCall.html';
       }

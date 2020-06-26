@@ -19,8 +19,15 @@
     
     <script>
         tinymce.init({
-          selector: '#mytextarea'
-        });
+  selector: 'textarea#drive-demo',
+  plugins: 'image media link tinydrive code imagetools',
+  height: 400,
+  toolbar: 'insertfile image link | code',
+  tinydrive_token_provider: 'URL_TO_YOUR_TOKEN_PROVIDER',
+  tinydrive_dropbox_app_key: 'YOUR_DROPBOX_APP_KEY',
+  tinydrive_google_drive_key: 'YOUR_GOOGLE_DRIVE_KEY',
+  tinydrive_google_drive_client_id: 'YOUR_GOOGLE_DRIVE_CLIENT_ID'
+});
       </script>
 
 
@@ -142,7 +149,7 @@
         <div class="col">
           <div class="collapse multi-collapse collapse show" id="multiCollapseExample1">
             <div class="card card-body">
-                <div class="container">
+                <div class="container text-center">
                     <div class="TempBox">
                     <h1 class = 'Patient'>Temperature Data</h1>
                     
@@ -168,7 +175,8 @@
         <div class="col">
           <div class="collapse multi-collapse collapse show" id="multiCollapseExample2">
             <div class="card card-body">
-                <div class="container">
+                <div class="container text-center">
+                 
                     <div class="TempBox2">
                     <h1 class = 'Patient'>Oxygen Data</h1>
                     
@@ -210,14 +218,22 @@
 
 <div class="row">
 <div class="col-md-6" id="notes">
-    <form method="post">
-        <textarea id="mytextarea" name="mytextarea">
-          Welcome to Medvita!
-        </textarea>
-      </form>
-
+  
+  <form>
+  <div class="form-group">
+    <div>
+      <div class="h2 text-left">Notes</div>
+     
+    <!-- <label for="exampleFormControlTextarea1">Notes</label> -->
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="17"></textarea>
+    <div class="btn  btn-outline-light text-center mt-3">Save notes to cloud</div>
+  </div>
+  </div>
+</form>
     </div>
 </div>
+
+
 
 
 <script src="videoCall.js"></script>

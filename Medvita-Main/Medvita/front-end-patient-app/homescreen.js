@@ -73,6 +73,7 @@ function addApp(){
           dateConcat: DateConcat,
           patientuid: patientUid,
           doctoruid: doctorUid,
+          webrtckey: '',
           temperature: 29,
           tempdata: 98
         };
@@ -127,13 +128,13 @@ function attemptJoinMeeting(num) {
   .then(function(doc) {
     console.log("Patient's user data: ", doc.data());    // Save meeting date and doc uid
     localStorage.setItem("dateConcat", dateArray[num]);
-    localStorage.setItem("doctorUid", doc.data().doctorUid);  
+    localStorage.setItem("doctorUid", doc.data().doctoruid);  
     if (doc.data().webrtckey != '') {
       console.log('WebRTC key found');          // Key has been found
-      //window.location = "videoCall.html";
+      window.location = "videoCall.html";
     } else {
       console.log('Going to waiting-room');     // Key has not been updated
-      //window.location = "waitingRoom.html";
+      window.location = "waitingRoom.html";
     }
   });
 }

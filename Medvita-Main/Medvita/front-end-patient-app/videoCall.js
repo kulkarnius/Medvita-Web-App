@@ -18,6 +18,9 @@ let remoteStream = null;
 let roomDialog = null;
 let roomId = null;
 
+/**
+ * Add event listeners to each of the buttons
+ */
 function init() {
   document.querySelector('#cameraBtn').addEventListener('click', openUserMedia);
   document.querySelector('#hangupBtn').addEventListener('click', hangUp);
@@ -26,6 +29,7 @@ function init() {
   roomDialog = new mdc.dialog.MDCDialog(document.querySelector('#room-dialog'));
 }
 
+// This will soon be deleted, as patient cannot be a host (causes errors if removed right now)
 async function createRoom() {
   document.querySelector('#createBtn').disabled = true;
   document.querySelector('#joinBtn').disabled = true;
@@ -104,6 +108,7 @@ async function createRoom() {
   // Listen for remote ICE candidates above
 }
 
+// This will be deleted, since the user will join the room by an id
 function joinRoom() {
   document.querySelector('#createBtn').disabled = true;
   document.querySelector('#joinBtn').disabled = true;
@@ -119,20 +124,36 @@ function joinRoom() {
   roomDialog.open();
 }
 
+/**
+ * Goes into the meeting info and checks for a valid WebRTC key,
+ * patient is redirected to the video call if a key is found
+ * and goes to a waiting room if the doctor has not started
+ * a video call yet
+ */
 function attemptJoinRoom() {
   firebase.auth().onAuthStateChanged(function(user) {
     const patientUid = user.uid;
+    const dateConcat = localStorage.getItem('dateConcat');
     console.log('Patient Uid: ', patientUid);
     const db = firebase.firestore();
     db.collection('patients').doc(`${patientUid}`)
+    .collection('schedule').doc(`${dateConcat}`)
     .get()
     .then(function(doc) {
+      if (doc.data().webrtckey == '') {
+        alert('Could not join room, please wait for doctor to host and try again');
+        return;
+      }
       console.log("WebRTC key: ", doc.data().webrtckey);
       joinRoomById(doc.data().webrtckey);
     });
   });
 }
 
+/**
+ * Takes the WebRTC key and attempts to join a room with it. It is
+ * possible that the room key is expired.
+ */
 async function joinRoomById(roomId) {
   const db = firebase.firestore();
   const roomRef = db.collection('rooms').doc(`${roomId}`);
@@ -198,6 +219,9 @@ async function joinRoomById(roomId) {
   }
 }
 
+/**
+ * Activates the patient's camera and microphone
+ */
 async function openUserMedia(e) {
   const stream = await navigator.mediaDevices.getUserMedia(
     { video: true, audio: true });
@@ -213,6 +237,11 @@ async function openUserMedia(e) {
   document.querySelector('#hangupBtn').disabled = false;
 }
 
+/**
+ * Leaves the call and closes the camera / microphone. Patient
+ * can rejoin call if they click to open media and then
+ * click join call.
+ */
 async function hangUp(e) {
   const tracks = document.querySelector('#localVideo').srcObject.getTracks();
   tracks.forEach(track => {
@@ -253,6 +282,9 @@ async function hangUp(e) {
   document.location.reload(true);
 }
 
+/**
+ * Registers the peer conection
+ */
 function registerPeerConnectionListeners() {
   peerConnection.addEventListener('icegatheringstatechange', () => {
     console.log(
@@ -276,18 +308,35 @@ function registerPeerConnectionListeners() {
 init();
 
 // Code to input sensor data and place into database
-function updateSensor() {
+function updateSensorData() {
+  // Get new sensor data here
   var temperature = 9;
   var tempdata = 19;
   
+  const db = firebase.firestore();
+  const dateConcat = localStorage.getItem('dateConcat');
+  console.log('Date concatenation: ', dateConcat);
+
+  // Store data into patient's meeting info
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      const db = firebase.firestore();
+      console.log('Patient Uid: ', user.uid);
       db.collection('patients').doc(`${user.uid}`)
+      .collection('schedule').doc(`${dateConcat}`)
       .update({
         temperature: temperature,
         tempdata: tempdata
       });
     }
+  });
+
+  // Store data into doctor's meeting info
+  const doctorUid = localStorage.getItem('doctorUid');
+  console.log('Doctor Uid', doctorUid);
+  db.collection('doctors').doc(`${doctorUid}`)
+  .collection('schedule').doc(`${dateConcat}`)
+  .update({
+    temperature: temperature,
+    tempdata: tempdata
   });
 }

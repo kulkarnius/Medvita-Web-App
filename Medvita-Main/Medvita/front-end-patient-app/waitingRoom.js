@@ -10,7 +10,7 @@ auth.onAuthStateChanged(function(user) {
     const dateConcat = localStorage.getItem('dateConcat');
     console.log('Patient Uid: ', user.id);
     console.log('Date concatenation: ', dateConcat);
-    db.collection('patients').doc(`${patientUid}`)
+    db.collection('patients').doc(`${user.id}`)
     .collection('schedule').doc(`${dateConcat}`)
     .onSnapshot(function(querySnapshot) {
       console.log(querySnapshot.data().webrtckey)

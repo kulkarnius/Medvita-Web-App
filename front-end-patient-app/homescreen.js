@@ -2,219 +2,211 @@
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-// Stores UID of the patients listed in schedule
-var scheduleUid = new Array(5);
-var doctor = '';
-var docUid = '';
+// Stores basic user info
+var doctorUidArray = new Array(5);
+var dateArray = new Array(5);
+var patient = '';
+var patientUid = '';
 var count = 0;
 
-// Add an appointment
-function addApp(){
-  // Get data from page
-  var FName = document.getElementById('FName').value;
-  var LName = document.getElementById('LName').value;
-  var patient = FName + ' ' + LName;
-  var Month = document.getElementById('Month').value;
-  var Day = document.getElementById('Day').value;
-  var Year = document.getElementById('Year').value;
-  var Time = document.getElementById('Time').value;
-  var Email = document.getElementById('Email').value;
-  var DateConcat = Year + Month + Day + Time.replace(':','');
+/**
+ * Add an apointment
+ * User clicks button, verifies that the doctor exists,
+ * then adds that appointment in both the patient's and
+ * the doctor's schedule.
+ * TODO: Add an email confirmation of the appointment
+ */
+function addApp() {
+    // Get data from page
+    var FName = document.getElementById('FName').value;
+    var LName = document.getElementById('LName').value;
+    var doctor = FName + ' ' + LName;
+    var Month = document.getElementById('Month').value;
+    var Day = document.getElementById('Day').value;
+    var Year = document.getElementById('Year').value;
+    var Time = document.getElementById('Time').value;
+    var Email = document.getElementById('Email').value;
+    var DateConcat = Year + Month + Day + Time.replace(':', '');
 
-  console.log(FName);
-  console.log(LName);
-  console.log(Month);
-  console.log(Day);
-  console.log(Year);
-  console.log(Time);
-  console.log(Email);
-  console.log(DateConcat);
+    // Checks that the user is valid and grabs their UID
+    var doctorUid = '';
+    var doctorRef = db.collection("doctors");
+    doctorRef.where("email", "==", Email)
+        .get()
+        .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                // Checks that first name and last name match
+                let data = doc.data();
+                if (data.fname == FName && data.lname == LName) {
+                    doctorUid = data.uid;
+                    console.log(doctorUid);
+                } else {
+                    alert('No matching doctor found');
+                    console.log('Names do not match');
+                }
+                console.log(doc.id, " => ", data);
+            });
 
-  // Checks that the user is valid and grabs their UID
-  var patientUid = '';
-  var patientsRef = db.collection("patients");
-  patientsRef.where("email", "==", Email)
-  .get()
-  .then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      // Checks that first name and last name match
-      let data = doc.data();
-      if (data.fname == FName && data.lname == LName) {
-        patientUid = data.uid;
-        console.log(patientUid);
-      } else {
-        alert ('No patient found');
-        console.log('Names do not match');
-      }
-      console.log(doc.id, " => ", data);
-    });
+            // Sends data to database
+            auth.onAuthStateChanged(function (user) {
+                console.log('user: ', user, ' doctor id: ', doctorUid);
+                if (user && doctorUid != '') {
+                    // Put meeting in doctor database
+                    const patientUid = user.uid;
+                    let patientRef = db.collection('patients').doc(`${patientUid}`);
+                    let getPatient = patientRef.get()
+                        .then(function (doc) {
+                            patient = doc.data().fname + ' ' + doc.data().lname;
+                            console.log(doc.id, '=>', doc.data());
 
-    // Sends data to database
-    auth.onAuthStateChanged(function(user){
-      if(user && patientUid != '') {
-        // Put meeting in doctor database
-        const doctorUid = user.uid;
-        let docRef = db.collection('doctors').doc(`${doctorUid}`);
-        let setDoctor = docRef.get()
-        .then(function(doc) {
-          doctor = doc.data().fname + ' ' + doc.data().lname;
-          console.log(doc.id, '=>', doc.data());
-          console.log(doctor);
+
+                            console.log('Patient name: ', patient);
+
+                            let data = {
+                                patient: patient,
+                                doctor: doctor,
+                                month: Month,
+                                day: Day,
+                                year: Year,
+                                time: Time,
+                                //email: Email,
+                                dateConcat: DateConcat,
+                                patientuid: patientUid,
+                                doctoruid: doctorUid,
+                                notes: '',
+                                webrtckey: '',
+                                temperature: 29,
+                                tempdata: 98
+                            };
+                            console.log(data);
+
+                            let docSchedRef = db.collection('doctors').doc(`${doctorUid}`)
+                                .collection('schedule').doc(`${DateConcat}`);
+                            const setDocSched = docSchedRef.set(data)
+                                .then(function () {
+                                    console.log("Document written with ID: ", DateConcat);
+                                })
+                                .catch(function (error) {
+                                    console.error("Error adding document: ", error);
+                                });
+
+                            // Put meeting in patient database
+                            let patSchedRef = db.collection('patients').doc(`${patientUid}`)
+                                .collection('schedule').doc(`${DateConcat}`);
+                            const setPatSched = patSchedRef.set(data)
+                                .then(function () {
+                                    console.log("Document written with ID: ", DateConcat);
+                                })
+                                .catch(function (error) {
+                                    console.error("Error adding document: ", error);
+                                });
+                        });
+                } else {
+                    console.log('No user found');
+                }
+            })
         })
-        .then(function() {
-
-        
-        console.log('Doctor: ', doctor);
-
-        let data = {
-          patient: patient,
-          doctor: doctor,
-          month: Month,
-          day: Day,
-          year: Year,
-          time: Time,
-          email: Email,
-          dateConcat: DateConcat,
-          patientuid: patientUid,
-          doctoruid: doctorUid
-        };
-        console.log(data);
-
-        let docSchedRef = docRef.collection('schedule').doc(`${DateConcat}`);
-  
-        const setDocSched = docSchedRef.set(data)
-        .then(function() {
-          console.log("Document written with ID: ", DateConcat);
-        })
-        .catch(function(error) {
-          console.error("Error adding document: ", error);
+        .catch(function (error) {
+            alert('No matching doctor found');
+            console.log("Error getting documents: ", error);
         });
-  
-        // Put meeting in patient database
-        let patSchedRef = db.collection('patients').doc(`${patientUid}`)
-        .collection('schedule').doc(`${DateConcat}`);
-        const setPatSched = patSchedRef.set(data)
-        .then(function() {
-          console.log("Document written with ID: ", DateConcat);
-        })
-        .catch(function(error) {
-          console.error("Error adding document: ", error);
+}
+
+/**
+ * Join the meeting
+ * When the user clicks on one of the buttons
+ * in the schedule, they will attempt to join
+ * a video meeting with the doctor. If the doctor
+ * has not initiated a meeting, then they will
+ * be placed in a waiting room until the doctor
+ * starts the meeting.
+ */
+function attemptJoinMeeting(num) {
+    console.log('Joining meeting on ', dateArray[num]);
+    db.collection('patients').doc(`${patientUid}`)
+        .collection('schedule').doc(`${dateArray[num]}`)  // Patient's meeting data
+        .get()
+        .then(function (doc) {
+            console.log("Patient's user data: ", doc.data());    // Save meeting date and doc uid
+            localStorage.setItem("dateConcat", dateArray[num]);
+            localStorage.setItem("doctorUid", doc.data().doctoruid);
+            if (doc.data().webrtckey != '') {
+                console.log('WebRTC key found');          // Key has been found
+                window.location = "videoCall.html";
+            } else {
+                console.log('Going to waiting-room');     // Key has not been updated
+                window.location = "waitingRoom.html";
+            }
         });
-        });
-      } else {
-        console.log('No user found');
-      }
-    })
-  })
-  .catch(function(error) {
-    alert('No patient found');
-    console.log("Error getting documents: ", error);
-  });
 }
 
-
-
-
-//var AppList = document.querySelector('.AppShow');
-
-function displayApp(doc){
-  // var AppList = document.querySelector('.AppShow');
-  // let AppDisplay = document.createElement('AppShow');
-  // let App = document.createElement('span');
-  // AppDisplay.setAttribute('data-id', doc.id);
-  // App.textContent = doc.data().patient +"<br>"; 
-  // console.log(doc.data().patient);
-  // AppDisplay.appendChild(App);
-  // AppList.appendChild(AppDisplay);
-  // AppDisplay.replaceChild(App,App);
-  console.log(doc.id);
-  $('.AppShow').append(doc.data().patient).
-  append("&nbsp;").
-  append("<button class='btn btn-outline-light' onClick='meeting" + count + "()'>Begin Appointment</button>").
-  append('&nbsp;').
-  append(doc.data().month).
-  append("/").
-  append(doc.data().day).
-  append("&nbsp;@&nbsp;").
-  append(doc.data().time).
-  append("<br>").
-  append("<br>");
-  
+/**
+ * Displays each appointment on the screen
+ * Takes in a document in the 'schedule' collection
+ * of the patient and outputs its data to the screen.
+ */
+function displayApp(doc) {
+    $('.AppShow').append(doc.data().doctor).
+        append("&nbsp;").
+        append("<button class='btn btn-outline-light' onClick='attemptJoinMeeting(" + count + ")'>Begin Appointment</button>").
+        append('&nbsp;').
+        append(doc.data().month).
+        append("/").
+        append(doc.data().day).
+        append("&nbsp;@&nbsp;").
+        append(doc.data().time).
+        append("<br>").
+        append("<br>");
 }
 
-function meeting0() {
-  localStorage.setItem("patientId", scheduleUid[0]);
-  window.location = "videoCall.html";
-}
-
-function meeting1() {
-  localStorage.setItem("patientId", scheduleUid[1]);
-  window.location = "videoCall.html";
-}
-
-function meeting2() {
-  localStorage.setItem("patientId", scheduleUid[2]);
-  window.location = "videoCall.html";
-}
-
-function meeting3() {
-  localStorage.setItem("patientId", scheduleUid[3]);
-  window.location = "videoCall.html";
-}
-
-function meeting4() {
-  localStorage.setItem("patientId", scheduleUid[4]);
-  window.location = "videoCall.html";
-}
-
-
-// Displays the 5 newest doctor appointments
+/**
+ * Get's an up-to-date schedule from the database
+ */
 function getSchedule() {
-  $('.AppShow').html("");
-  count = 0;
+    console.log('Retrieving schedule');
+    $('.AppShow').html("");
+    count = 0;
 
-  auth.onAuthStateChanged(function(user){
-    if(user) {
-      docUid = user.uid;
-      let schedRef = db.collection('doctors').doc(`${docUid}`).collection('schedule');
-      schedRef.orderBy('dateConcat').limit(5).get()
-      .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          const data = doc.data();
-          console.log(data);
-          // Output to HTML page (Lucas DOM manipulation goes here)
+    // Detects Firebase Auth user
+    auth.onAuthStateChanged(function (user) {
+        if (user) {
+            patientUid = user.uid;
+            console.log('Patient uid: ', patientUid);
+            // Get the schedule for the current user
+            db.collection('patients').doc(`${patientUid}`).collection('schedule')
+                .orderBy('dateConcat').limit(5).get()
+                .then(function (querySnapshot) {
+                    console.log('Displaying each meeting');
+                    console.log(querySnapshot);
 
-          // The patient uid, which is the variable that needs to be stored
-          // in localStorage variable 'patientId' when the video button
-          // is clicked, will be stored in data.uid. I'm not sure how you
-          // will store the uid for each of the 5 patients, but you may not need
-          // to. If you only have a 'start meeting' button for the
-          // nearest meeting, you might be able to get away with
-          // preemptively putting the variable in local storage
-          // during the first pass-through of this code
-
-          displayApp(doc);
-          scheduleUid[count] = data.patientuid;
-          console.log('Patients UID: ' + data.patientuid);
-          count++;
-        });
-      })
-      .catch(function(error){
-        console.log('Error: ', error);
-      });
-    } else {
-      console.log('No user detected');
-    }
-  });
+                    // Goes through the closest meetings
+                    querySnapshot.forEach(function (doc) {
+                        console.log("Schedule data for meeting ", count, " : ", doc.data());
+                        displayApp(doc);
+                        doctorUidArray[count] = doc.data().doctoruid;
+                        dateArray[count] = doc.data().dateConcat;
+                        count++;
+                    });
+                })
+                .catch(function (error) {
+                    console.log('Error: ', error);
+                });
+        } else {
+            console.log('No user detected');
+        }
+    });
 }
 
+/**
+  * Loads the schedule to the screen, and sets a listener
+  * that allows for real-time of the schedule
+  */
 getSchedule();
-
-auth.onAuthStateChanged(function(user){
-  if(user) {
-    db.collection('doctors').doc(`${docUid}`).collection('schedule')
-        .onSnapshot(function(querySnapshot) {
-          getSchedule();
-    });
-  }
+auth.onAuthStateChanged(function (user) {
+    if (user) {
+        db.collection('patients').doc(`${user.uid}`).collection('schedule')
+            .onSnapshot(function (querySnapshot) {
+                getSchedule();
+            });
+    }
 });

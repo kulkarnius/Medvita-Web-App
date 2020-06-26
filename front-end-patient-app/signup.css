@@ -1,32 +1,35 @@
-body{
-
+#birthday{
+    border-bottom: 3px solid white;
+    margin-bottom: 10px;
+  }
+  
+  body{
+  
     background: linear-gradient(to left, #12c2e9, #c471ed, #f64f59); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    background-size: cover;
     background-position: center;
     color:rgb(100, 101, 129);
-}
-html{
+  }
+  html{
     height: 100%;
-}
-#main{
-    padding:7%;
+  }
+  #main{
+    padding-top:1%;
     color: white;
-}
-h1{
-padding-bottom: 5%;
-text-align: center;
-}
-.nav-link{
+  }
+  h1{
+  padding-bottom: 2%;
+  text-align: center;
+  }
+  .nav-link{
     color: white;
-}
-.navBar{
+  }
+  .navBar{
     color: white;
-<<<<<<< HEAD
-}
-
-.cancelbtn{
+  }
+  #button{
+    margin-bottom: 5%;
+  }
+  a{
+  text-decoration: underline;
     color: white;
-    background-color: #f44336;
-    float: right;
-=======
->>>>>>> master
-}
+  }

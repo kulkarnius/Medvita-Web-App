@@ -1,5 +1,11 @@
-// Creates a Google Auth ID and stores data into corresponding doctor's database
-
+/**
+ * Signs up the user
+ * Checks that the user properly filled out all of the entries,
+ * then creates an auth account and adds the user info to the database
+ * TODO: 1) Check that the email is valid
+ *       2) Verify complexity of the password
+ *       3) Be sure that the TOS checkbox is clicked
+ */
 function signup()
 {  
   // Gets user info
@@ -63,9 +69,9 @@ function signup()
 
     const uinfo_ref = db.collection('doctors').doc(`${userid}`).set(data)
     .then(function() {
-      // Got to vitals page
+      // Got to homescreen
       console.log(data);
-      window.location = "Vitals.html";
+      window.location = "homescreen.html";
     }).catch(function(error) {
       // Couldn't put data in database
       alert('Could not put data in database');

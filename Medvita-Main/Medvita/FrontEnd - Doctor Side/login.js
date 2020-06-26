@@ -1,19 +1,39 @@
-
+/**
+ * Attempts to log in the user using Firebase auth,
+ * then checks in the database to be sure that the user
+ * is a doctor
+ */
 function login()
 {  
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+
   // Gets user info
   var email = document.getElementById('username').value;
   var password = document.getElementById('password').value;
   console.log(email);
   console.log(password);
 
-  // Signs up the user
-  firebase.auth().signInWithEmailAndPassword(email, password)
+  // Signs in the doctor
+  auth.signInWithEmailAndPassword(email, password)
   .then(function(result) {
-    // Redirects to Vitals page
-    window.location = "homescreen.html";
+    // Ensures that email is for doctor and not patient
+    console.log(result.user.uid);
+    db.collection('doctors').doc(`${result.user.uid}`)
+    .get()
+    .then(function(doc) {
+      // Redirects to homescreen
+      console.log('Logged in ', doc.data().fname, ' ', doc.data().lname);
+      window.location = "homescreen.html";
+    })
+    .catch(function(error) {
+      console.log('User is not a patient');
+      auth.signOut();
+      alert('Incorrect email or password');
+    }); 
   }).catch(function(error) {
     // Error handling
-    alert('Something went wrong');
+    console.log('Cannot sign in through Firebase Auth');
+    alert('Incorrect email or password');
   });
 }

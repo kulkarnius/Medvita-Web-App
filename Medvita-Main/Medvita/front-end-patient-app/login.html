@@ -50,12 +50,20 @@
         </div>
         <button type="button" class="btn btn-primary" onclick="login()"> <span class="spinner-grow spinner-grow-sm"
             role="status" aria-hidden="true"></span> Login</button>
+        <button id="exitApp" type="button" class="cancelbtn">Exit Application</button>
+        <!--<span class="psw"><a href="forgotpsw.html">Forgot Password?</a></span>-->
       </form>
 
     </div>
 
   </div>
 
+  <script>
+    let exitApp = document.getElementById('exitApp')
+    exitApp.addEventListener('click', function() {
+      window.exitApp();
+    })
+  </script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
     crossorigin="anonymous"></script>

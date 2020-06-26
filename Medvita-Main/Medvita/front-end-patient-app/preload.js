@@ -1,23 +1,23 @@
 const electron = require('electron');
 const ipc = electron.ipcRenderer;
 
-window.exitApp = function(){
+window.exitApp = function () {
     ipc.send('close-me')
 }
 
-window.UserPassError = function(){
+window.UserPassError = function () {
     ipc.send('userpass-error-dialog')
 }
 
-window.PassNoMatchError = function(){
+window.PassNoMatchError = function () {
     ipc.send('passnomatch-error-dialog')
 }
 
-window.DatabaseError = function(){
+window.DatabaseError = function () {
     ipc.send('database-error-dialog')
 }
 
-window.AccountCreationError = function(){
+window.AccountCreationError = function () {
     ipc.send('account-not-created-dialog')
 }
 

@@ -217,16 +217,16 @@
 
 
 <div class="row">
-<div class="col-md-6" id="notes">
+<div class="col-md-6" id="notes-class">
   
-  <form>
+  <form id="doctor-notes">
   <div class="form-group">
     <div>
       <div class="h2 text-left">Notes</div>
      
     <!-- <label for="exampleFormControlTextarea1">Notes</label> -->
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="17"></textarea>
-    <div class="btn  btn-outline-light text-center mt-3">Save notes to cloud</div>
+    <textarea class="form-control" id="notes" rows="17"></textarea>
+    <div class="btn  btn-outline-light text-center mt-3" onClick="saveFormData()">Save notes to cloud</div>
   </div>
   </div>
 </form>

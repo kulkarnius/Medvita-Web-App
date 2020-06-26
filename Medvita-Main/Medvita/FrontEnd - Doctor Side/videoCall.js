@@ -74,6 +74,28 @@ function init() {
 }
 
 /**
+ * Saves the notes that the doctor takes and puts them in the cloud
+ */
+function saveFormData() {
+  var notes = document.querySelector('#notes').textContent;
+  console.log("Doctor's notes: ", notes);
+  
+  // Puts notes in doctor's database
+  db.collection('doctors').doc(`${doctorUid}`)
+  .collection('schedule').doc(`${dateConcat}`)
+  .update({
+    notes: notes
+  });
+
+  // Puts notes in patient's database
+  db.collection('patients').doc(`${patientUid}`)
+  .collection('schedule').doc(`${dateConcat}`)
+  .update({
+    notes: notes
+  });
+}
+
+/**
  * Create a room and put the WebRTC key into the patient's 
  * and the doctor's database
  */
@@ -302,6 +324,9 @@ async function hangUp(e) {
   .update({
     webrtckey: ''
   });
+
+  // Stores doctor's notes in the schedule
+
 
   // Delete room on hangup
   if (roomId) {

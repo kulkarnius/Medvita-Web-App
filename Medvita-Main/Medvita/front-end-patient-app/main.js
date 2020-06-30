@@ -15,15 +15,16 @@ let win;
 
 function createWindow() {
     win = new BrowserWindow({
-        /*modal: true,*/ title: 'Login-Screen',
+        /*modal: true,*/ show: false, title: 'Login-Screen', 
         //width: 400, maxWidth: 400, height: 525, maxHeight: 525, //frame: false,
         webPreferences: {
             //nodeIntegration: true, //not secure
             //enableRemoteModule: true, //not secure
             //contextIsolation: true, //protects against prototype pollution attacks, needs to be set eventually
-            preload: path.join(app.getAppPath(), 'preload.js')
+            preload: path.join(app.getAppPath(), 'preload.js'),
         }
     });
+    win.maximize();
     win.once('ready-to-show', () => {
         win.show()
     });

@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Medvita Login</title>
+    <link rel="icon" href="../MedVitaLogo.jpg">
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
@@ -10,6 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
     <script src="init.js"></script>
+   
 
 </head>
 <body>
@@ -30,11 +32,13 @@
 <div id="main">
 
 
-    <h1 class="display-4 text-center m-5">Welcome to Medvita Account Creation</h1>
+    <h1 class="display-3 text-center m-5">Welcome to Medvita!</h1>
+    <h3 class="display-5 px-5 pb-5">Please enter you email below to get notified of future updates and releases:</h1>
+
 
 <div class="container">
 
-
+<!-- 
 
     <form class="needs-validation" novalidate>
         <div class="form-row">
@@ -179,7 +183,7 @@
               Please provide a valid postal code.
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="form-row">
 
             <div class="col-md-12 mb-3">
@@ -191,7 +195,7 @@
             </div>
 
 
-            <div class="col-md-6 mb-3">
+            <!-- <div class="col-md-6 mb-3">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" required>
                 <div class="invalid-feedback">
@@ -204,7 +208,7 @@
                 <div class="invalid-feedback">
                 Please provide a valid password.
                 </div>
-            </div>
+            </div> -->
 
     </div>
         <div class="form-group">
@@ -219,7 +223,7 @@
           </div>
           
         </div>
-        <button class="btn btn-primary" type="button" id="button" onClick="signup()"><span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>   Signup</button>
+        <button class="btn btn-primary" type="button" id="button" onClick="signup()"><span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>   Get Notified</button>
       </form>
 
 

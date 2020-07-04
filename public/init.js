@@ -1,11 +1,11 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyDx8Ix9D_ROmcJBA1HpKDiR_iJcbGMrZHI",
-  authDomain: "medtech-277402.firebaseapp.com",
-  databaseURL: "https://medtech-277402.firebaseio.com",
-  projectId: "medtech-277402",
-  storageBucket: "medtech-277402.appspot.com",
-  messagingSenderId: "692417874019",
-  appId: "1:692417874019:web:69b0aecaa42a54451d9056",
-  measurementId: "G-LKCEYMETRK"
+  apiKey: "AIzaSyAcDkplnp-4GF62Dk53530xMVF1ICIA3Aw",
+  authDomain: "medvita-production.firebaseapp.com",
+  databaseURL: "https://medvita-production.firebaseio.com",
+  projectId: "medvita-production",
+  storageBucket: "medvita-production.appspot.com",
+  messagingSenderId: "728654126367",
+  appId: "1:728654126367:web:5045de58cd9ff648e0242a",
+  measurementId: "G-S85EMVKZBJ"
 };
 firebase.initializeApp(firebaseConfig);

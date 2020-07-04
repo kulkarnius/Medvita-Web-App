@@ -97,7 +97,7 @@ function validateEmail(email)
 // Temporary signup for email updates
 function signup() {
   if (!document.getElementById('invalidCheck').checked) {
-    alert('Please agree to terms and conditions');
+    alert('Please agree to the privacy policy');
     return;
   }
 
@@ -114,6 +114,6 @@ function signup() {
   })
   .then(function() {
     console.log('Going to next page');
-    window.location = "startup.html";
+    window.location = "index.html";
   });
 }    

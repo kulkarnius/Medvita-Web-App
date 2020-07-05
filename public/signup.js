@@ -114,6 +114,6 @@ function signup() {
   })
   .then(function() {
     console.log('Going to next page');
-    window.location = "index.html";
+    window.location = "signupConfirmation.html";
   });
 }    

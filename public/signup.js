@@ -5,6 +5,7 @@ function validateEmail(email)
   return re.test(email);
 }
 
+
 // Temporary signup for email updates
 function signup() {
   if (!document.getElementById('invalidCheck').checked) {
@@ -17,7 +18,7 @@ function signup() {
     alert('Please enter a valid email address');
     return;
   }
-  
+
   const db = firebase.firestore();
   db.collection('emails').doc('updates')
   .update({
@@ -28,3 +29,6 @@ function signup() {
     window.location = "signupConfirmation.html";
   });
 }    
+
+
+  

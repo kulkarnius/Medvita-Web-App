@@ -17,7 +17,7 @@ function signup() {
     alert('Please enter a valid email address');
     return;
   }
-
+  
   const db = firebase.firestore();
   db.collection('emails').doc('updates')
   .update({

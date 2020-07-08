@@ -54,7 +54,6 @@ function signup()
         fname: Fname,
         lname: Lname,
         email: Email,
-        patient: new Array(),
         healthcareid: healthcareId,
         uid: userid
       },
@@ -69,7 +68,9 @@ function signup()
         province: Province,
         postalcode: Postalcode,
         licence: licenseArray
-      }
+      },
+      patients: new Array(),
+      availability: new Array()
     };
 
     const db = firebase.firestore();

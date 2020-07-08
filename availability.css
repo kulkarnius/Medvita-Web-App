@@ -1,0 +1,79 @@
+body{
+
+  background: linear-gradient(to left, #12c2e9, #c471ed, #f64f59); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    background-size: cover;
+  background-size: cover;
+  background-position: center;
+  color:white;
+}
+html{
+  height: 100%;
+}
+#main{
+  padding:7%;
+  color: white;
+}
+h1{
+padding-bottom: 5%;
+text-align: center;
+}
+.nav-link{
+  color: white;
+}
+.navBar{
+  color: white;
+}
+#test{
+
+  border: 2px solid black;
+}
+.container{
+  /* border: 10px solid white; */
+  /* border-radius: 25px; */
+  margin-top: 12.4%;
+
+}
+#appAlert{
+
+  margin-top: 7%;
+}
+.AppShow{
+
+font-size: 25px;
+
+
+}
+#nopadding{
+
+  margin-top: 0%;
+}
+#patientBox{
+
+  text-align: center;
+}
+.Patient{
+  margin-bottom: 5%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto auto;
+  background-color: #2196F3;
+  padding: 10px;
+  width: 60%;
+}
+
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.calendar-btn {
+  background-color: #c6d9e4cc;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}

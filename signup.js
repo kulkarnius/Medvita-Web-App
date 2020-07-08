@@ -50,19 +50,27 @@ function signup()
 
     // Stores rest of data to database
     let data ={
-      uid: userid,
-      email: Email,
-      fname: Fname,
-      lname: Lname,
+      info: {
+        fname: Fname,
+        lname: Lname,
+        email: Email,
+        //healthcareid: healthcareId,
+        uid: userid
+      },
       birthday: {
         month: Month,
         day: Day,
         year: Year
       },
-      address: Address,
-      city: City,
-      province: Province,
-      postalcode: Postalcode
+      location: {
+        address: Address,
+        city: City,
+        province: Province,
+        postalcode: Postalcode
+        //licence: licenseArray
+      },
+      patients: new Array(),
+      availability: new Array()
     };
 
     const db = firebase.firestore();

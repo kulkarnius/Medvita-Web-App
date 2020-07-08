@@ -54,7 +54,7 @@ function signup()
         fname: Fname,
         lname: Lname,
         email: Email,
-        healthcareid: healthcareId,
+        //healthcareid: healthcareId,
         uid: userid
       },
       birthday: {
@@ -66,8 +66,8 @@ function signup()
         address: Address,
         city: City,
         province: Province,
-        postalcode: Postalcode,
-        licence: licenseArray
+        postalcode: Postalcode
+        //licence: licenseArray
       },
       patients: new Array(),
       availability: new Array()

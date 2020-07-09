@@ -11,8 +11,8 @@ var firstTime = '';
 
 var selectedTimeArray = new Array();
 
-const btnColor = '#c6d9e4cc';
-const btnSelectColor = '#2853c8';
+const btnColor = '#ffffff00';
+const btnSelectColor = '#23F36B';
 
 var doctorUid = '';
 

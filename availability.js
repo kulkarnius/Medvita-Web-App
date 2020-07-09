@@ -374,7 +374,7 @@ function pickTime(btnNum) {
     // Destroy timeblock
     selectedTimeArray.splice(selectedTimeArray.indexOf(dateConcat), 1);
     document.getElementById(`${'calendarBtn'+btnNum.toString()}`).style.background = btnColor;
-
+/*
     // Removes next part of timeblock
     if (selectedTimeArray.includes(nextTime) && !selectedTimeArray.includes(nextTime2)) {
       selectedTimeArray.splice(selectedTimeArray.indexOf(nextTime), 1);
@@ -387,7 +387,7 @@ function pickTime(btnNum) {
       selectedTimeArray.splice(selectedTimeArray.indexOf(previousTime), 1);
       if (btnNum-1 > 0)
         document.getElementById(`${'calendarBtn'+(btnNum-1).toString()}`).style.background = btnColor;
-    }
+    }*/
 
   // Button hasn't been selected
   } else {
@@ -395,13 +395,13 @@ function pickTime(btnNum) {
     // Add timeblock
     selectedTimeArray.push(dateConcat);
     document.getElementById(`${'calendarBtn'+btnNum.toString()}`).style.background = btnSelectColor;
-    
+    /*
     // Create new timeblock
     if (!selectedTimeArray.includes(previousTime) && !selectedTimeArray.includes(nextTime)) {
         selectedTimeArray.push(nextTime);
         if (btnNum+1 < NUM_TIMES)
           document.getElementById(`${'calendarBtn'+(btnNum+1).toString()}`).style.background = btnSelectColor;
-    } 
+    } */
   }
 
   // Update database

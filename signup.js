@@ -91,4 +91,25 @@ function signup()
     console.log('Error: ', error);
     alert('Could not create an account');
   });
-} 
+}
+
+
+// var userid = '';
+
+// firebase.auth().onAuthStateChanged((user) => {
+//   userid = user.uid;
+// })
+
+// const db = firebase.firestore()
+
+// db.collection('doctors').doc(`${userid}`)
+// .get()
+// .then((doc) => {
+//   const month = doc.data().birthday.month;
+// })
+
+// db.collection('doctors').doc(`${userid}`)
+// .update({
+//   birthday.day = '23',
+//   info.fname = 'Lucas'
+// })
